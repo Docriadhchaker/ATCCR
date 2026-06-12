@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Local storage
+storage/
+uploads/
+
+# Generated PDFs
+*.pdf
+!docs/**/*.pdf
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Prisma local sqlite (not used, safety)
+prisma/*.db
+prisma/*.db-journal
+
+# IDE
+.idea/
+.vscode/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# Secrets
+secrets/
+*.pem

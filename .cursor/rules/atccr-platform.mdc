@@ -1,0 +1,89 @@
+---
+description: Règles du projet ATCCR Congress Platform — toujours appliquées
+globs:
+alwaysApply: true
+---
+
+# ATCCR Congress Platform
+
+Plateforme de **gestion d'un congrès médical scientifique**. Ce n'est PAS une plateforme startup, incubateur, pitch ou concours entrepreneurial.
+
+## Avant tout codage
+
+Lire obligatoirement :
+1. `AGENTS.md`
+2. `PRODUCT_SPEC.md`
+3. `docs/01_ARCHITECTURE.md`
+4. `docs/02_DATABASE_MODEL.md`
+5. `docs/03_RBAC_PERMISSIONS.md`
+6. `docs/04_MVP_ROADMAP.md`
+
+## Vocabulaire interdit
+
+Ne jamais utiliser dans le code, l'UI, les routes, les modèles BDD ou les seeds :
+`startup`, `incubator`, `pitch`, `founder`, `investor`, `business competition`, `candidature startup`, `coup de cœur`.
+
+Utiliser : scientific submission, abstract, participant, resident, speaker, moderator, scientific committee, scientific evaluator, sponsor, badge, certificate, congress, session, presentation.
+
+## Stack figée
+
+- Next.js App Router + TypeScript
+- Tailwind CSS + shadcn/ui
+- Prisma + PostgreSQL (Supabase = hébergement PostgreSQL trial uniquement)
+- Auth.js (PAS Supabase Auth)
+- next-intl (FR/EN)
+
+## Contraintes Phase 0
+
+- PAS de Redis, BullMQ, S3, MinIO, workers
+- Stockage local via `StoragePort` + `LocalFileStorage`
+- `MailPort` → console/logger ; `PdfPort` → stub synchrone ; `QueuePort` → `InlineJobRunner`
+- Ne pas coder inscriptions, paiements UI, soumissions, badges, scanner en Phase 0
+- Ne jamais committer `.env`, secrets, clés API, URLs Supabase, mots de passe, données réelles
+
+## Modèle BDD figé
+
+- `registration` → many `payments` → many `payment_proofs` ; `registration.payment_status` = résumé
+- `speakers.user_id` nullable
+- Évaluateurs = `users` avec rôle `scientific_evaluator`
+- `sessions` = programme global ; `presentations` = travaux dans une session
+- `certificates` : `recipient_user_id` + nullable `registration_id`/`submission_id`/`session_id` + `certificate_type`, `status`, `authorized_by`, `generated_file_id`, `verification_code`
+
+## Inspiration plateforme existante
+
+- Do NOT copy proprietary code, design assets, text, logos, private screenshots, or database structure from any existing internal platform.
+- Screenshots are functional inspiration only — never direct reproduction.
+
+## Langue du code
+
+- English: code, DB models, variables, services, routes, internal identifiers, commits, technical docs.
+- French + English: user-facing UI labels only, via `messages/fr.json` and `messages/en.json` — no hardcoded UI strings.
+
+## Base de données — opérations interdites
+
+Never run without explicit approval: `prisma migrate reset`, destructive `db push`, DROP/TRUNCATE tables, or deleting seed data.
+
+## Validation avant commit
+
+Run or report results before proposing a commit:
+
+- `npm run lint` — always
+- `npm run typecheck` — always
+- `npm run build` — when relevant
+- `prisma validate` — when schema changes
+- `prisma migrate status` — when migrations change
+
+## Données fictives uniquement
+
+Fake demo data only in seeds, tests, screenshots, and examples. Never use real participant names, emails, phones, payment proofs, medical abstracts, private screenshots, or private congress data.
+
+## Règles de travail
+
+- Une phase à la fois — voir `docs/04_MVP_ROADMAP.md`
+- Logique métier dans `src/server/services/`, pas dans les composants UI
+- RBAC vérifié côté serveur via policies
+- Exigence ambiguë → demander avant d'inventer
+- Changement schéma → mettre à jour `docs/02_DATABASE_MODEL.md`
+- Changement permissions → mettre à jour `docs/03_RBAC_PERMISSIONS.md`
+- Nouvelle décision → `docs/08_DECISIONS_LOG.md`
+- Fin de tâche → résumé structuré selon `docs/07_AI_WORKFLOW_RULES.md` + résultats validation

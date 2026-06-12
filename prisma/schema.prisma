@@ -1,0 +1,12 @@
+// ATCCR Congress Platform — minimal Prisma setup (Step A).
+// Full models are added in Phase 0 Step B.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
