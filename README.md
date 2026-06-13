@@ -55,6 +55,27 @@ See `.env.example` for placeholders. **Never commit real credentials.**
 | `npm run lint` | Run ESLint |
 | `npm run typecheck` | TypeScript check without emit |
 | `npm run prisma:validate` | Validate `prisma/schema.prisma` |
+| `npm run smoke:ports` | Run the local ports/adapters smoke check |
+
+## Ports and adapters (Phase 0)
+
+Infrastructure concerns are accessed through small port interfaces so the
+backend can be swapped in later phases without changing business logic. Phase 0
+ships local/mock adapters only — no Redis, BullMQ, S3, MinIO, Supabase Storage,
+or external email providers.
+
+| Concern | Factory | Phase 0 adapter | Behavior |
+|---------|---------|-----------------|----------|
+| Storage | `getStorage()` | `LocalFileStorage` | Files stored on local disk under `STORAGE_LOCAL_PATH` (default `./storage`, gitignored). Unique filenames, path-traversal protected. |
+| Mail | `getMailer()` | `ConsoleMailer` | Logs structured mail metadata only — **console-only, no real email is sent**. |
+| PDF | `getPdfGenerator()` | `SyncPdfGenerator` | **Stub only** — returns a minimal placeholder PDF (no Puppeteer/heavy libs). |
+| Queue | `getJobRunner()` | `InlineJobRunner` | **Inline only** — runs jobs immediately in-process; errors returned, not thrown. No workers. |
+
+Import factories from `@/lib/storage`, `@/lib/mail`, `@/lib/pdf`, `@/lib/queue`.
+Port contracts live in `src/lib/ports/`, adapters in `src/lib/adapters/`.
+
+Environment variables are validated with zod in `@/lib/env` (`getEnv()`); values
+are never logged.
 
 ## Project structure
 

@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "smoke:ports": "tsx --env-file=.env scripts/smoke-ports.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
