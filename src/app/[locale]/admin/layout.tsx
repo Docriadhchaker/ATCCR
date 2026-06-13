@@ -1,6 +1,6 @@
-import { setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 
-import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminIntlShell } from "@/components/admin/admin-intl-shell";
 import { requireAdminShellAccess } from "@/server/policies/auth.policy";
 
 type Props = {
@@ -12,10 +12,11 @@ export default async function AdminLayout({ children, params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const user = await requireAdminShellAccess();
+  const messages = await getMessages();
 
   return (
-    <AdminShell locale={locale} userEmail={user.email}>
+    <AdminIntlShell locale={locale} messages={messages} userEmail={user.email}>
       {children}
-    </AdminShell>
+    </AdminIntlShell>
   );
 }

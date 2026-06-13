@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { fontBody, fontHeading } from "@/lib/fonts";
 
 type Props = {
   children: React.ReactNode;
@@ -24,8 +25,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        <NextIntlClientProvider messages={messages}>
+      <body
+        suppressHydrationWarning
+        className={`${fontBody.variable} ${fontHeading.variable} font-sans`}
+      >
+        <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>

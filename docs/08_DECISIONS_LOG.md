@@ -232,6 +232,25 @@
 
 ---
 
+## DEC-015 — Admin shell : navy ATCCR, teal accent, typographie design system
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Phase 0 Step D2.1 stabilise le shell admin après audit. Le générateur `ui-ux-pro-max` (`MASTER.md`) propose un primary teal `#0891B2`, tandis que `docs/05_UI_UX_GUIDELINES.md` et `globals.css` définissent déjà le navy ATCCR `#0F2B5B` avec teal `#0D9488` en accent. L'audit signale aussi des erreurs `MISSING_MESSAGE` en dev sur les composants client admin.
+
+**Décision** :
+- Conserver le **navy `#0F2B5B`** comme couleur primary du shell admin (sidebar, topbar titres) et le **teal `#0D9488`** comme secondary/accent (liens actifs, ring, badges) — conforme à `docs/05`, pas au teal primary du MASTER généré.
+- Largeur contenu dashboard : `max-w-6xl` (~1152px), plus proche de la cible admin-shell (1200px) que `max-w-7xl`.
+- Typographie via `next/font/google` : **Figtree** (titres) + **Noto Sans** (corps), conforme au design system généré.
+- i18n admin : boundary dédiée `AdminIntlShell` avec `NextIntlClientProvider locale={locale} messages={messages}` alimentée par le layout serveur, plus `locale` explicite sur le provider racine `[locale]/layout.tsx`.
+
+**Alternatives écartées** : Adopter le primary teal du MASTER (écart charte médicale validée) ; fallbacks texte en dur dans les composants admin.
+
+**Conséquences** : Cohérence visuelle ATCCR préservée. Composants client admin reçoivent messages + locale de façon stable en dev/HMR. `MASTER.md` reste référence complémentaire ; la palette authoritative reste `docs/05`.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -250,3 +269,4 @@
 | DEC-012 | Statut de paiement sponsor dédié | accepté |
 | DEC-013 | Auth.js credentials + session JWT | accepté |
 | DEC-014 | ui-ux-pro-max source du design system | accepté |
+| DEC-015 | Admin shell navy/teal + typographie + i18n boundary | accepté |

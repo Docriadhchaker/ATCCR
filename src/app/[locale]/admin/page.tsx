@@ -34,7 +34,7 @@ export default async function AdminDashboardPage({ params }: Props) {
   const user = await requireAdminShellAccess();
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6">
+    <div className="mx-auto w-full max-w-6xl space-y-6">
       <header className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           {t("dashboardTitle")}

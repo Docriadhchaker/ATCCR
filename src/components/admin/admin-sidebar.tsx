@@ -42,7 +42,7 @@ export function AdminSidebar({ locale, mobileOpen, onClose }: Props) {
       <div
         aria-hidden={!mobileOpen}
         className={cn(
-          "fixed inset-0 z-40 bg-foreground/50 transition-opacity duration-200 lg:hidden",
+          "fixed inset-0 z-40 cursor-pointer bg-foreground/50 transition-opacity duration-200 motion-reduce:transition-none lg:hidden",
           mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={onClose}
@@ -51,7 +51,7 @@ export function AdminSidebar({ locale, mobileOpen, onClose }: Props) {
       {/* Mobile drawer */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-primary transition-transform duration-300 lg:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-primary transition-transform duration-300 motion-reduce:transition-none lg:hidden",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
         aria-label={t("nav.ariaLabel")}
