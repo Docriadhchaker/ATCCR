@@ -53,5 +53,72 @@
       "checkin": "Génération de badges et contrôle d'accès.",
       "certificates": "Attestations et certificats des participants."
     }
+  },
+  "CongressSettings": {
+    "pageTitle": "Paramètres du congrès",
+    "pageDescription": "Consultez et modifiez les informations générales du congrès de démonstration.",
+    "backToDashboard": "Retour au tableau de bord",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "saveSuccess": "Les paramètres du congrès ont été enregistrés.",
+    "saveHint": "Seuls les champs existants du schéma sont modifiables. Aucune synchronisation avec le site public pour l'instant.",
+    "slugReadOnlyHelper": "Identifiant technique en lecture seule — ne pas modifier pour éviter de casser les liens.",
+    "sections": {
+      "general": "Informations générales",
+      "generalDescription": "Nom, dates, lieu et statut de publication du congrès.",
+      "hero": "Contenu hero (site public)",
+      "heroDescription": "Textes d'accueil prévus pour la page publique — non publiés en Phase 0.",
+      "schedule": "Fenêtres d'inscription et de soumission",
+      "scheduleDescription": "Dates d'ouverture et de fermeture des parcours participants et scientifiques.",
+      "branding": "Couleurs de marque",
+      "brandingDescription": "Couleurs primary et secondary utilisées par le thème du congrès."
+    },
+    "fields": {
+      "slug": "Identifiant (slug)",
+      "nameFr": "Nom du congrès (FR)",
+      "nameEn": "Nom du congrès (EN)",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "venue": "Lieu / salle",
+      "city": "Ville",
+      "country": "Pays",
+      "format": "Format",
+      "status": "Statut de publication",
+      "heroTitleFr": "Titre hero (FR)",
+      "heroTitleEn": "Titre hero (EN)",
+      "heroSubtitleFr": "Sous-titre hero (FR)",
+      "heroSubtitleEn": "Sous-titre hero (EN)",
+      "heroDescriptionFr": "Description hero (FR)",
+      "heroDescriptionEn": "Description hero (EN)",
+      "registrationOpensAt": "Ouverture des inscriptions",
+      "registrationClosesAt": "Fermeture des inscriptions",
+      "earlyBirdDeadline": "Date limite tarif early bird",
+      "submissionOpensAt": "Ouverture des soumissions",
+      "submissionClosesAt": "Fermeture des soumissions",
+      "certificateAvailableAt": "Disponibilité des attestations",
+      "primaryColor": "Couleur primary",
+      "secondaryColor": "Couleur secondary"
+    },
+    "format": {
+      "onsite": "Présentiel",
+      "hybrid": "Hybride",
+      "online": "En ligne"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "published": "Publié",
+      "archived": "Archivé"
+    },
+    "errors": {
+      "required": "Ce champ est obligatoire.",
+      "invalidDate": "Date invalide.",
+      "invalidColor": "Couleur hexadécimale invalide (ex. #0F2B5B).",
+      "validation": "Veuillez corriger les champs signalés.",
+      "forbidden": "Vous n'avez pas l'autorisation de modifier ces paramètres.",
+      "notFound": "Congrès introuvable.",
+      "generic": "Une erreur est survenue. Veuillez réessayer.",
+      "endDateBeforeStart": "La date de fin doit être postérieure ou égale à la date de début.",
+      "closesBeforeOpens": "La date de fermeture doit être postérieure à la date d'ouverture."
+    }
   }
 }

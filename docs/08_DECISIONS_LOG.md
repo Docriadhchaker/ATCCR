@@ -251,6 +251,21 @@
 
 ---
 
+## DEC-016 — Paramètres congrès admin sans migration schéma (Phase 0 D3)
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Phase 0 Step D3 requiert une page admin minimale pour consulter et modifier les paramètres généraux du congrès, sans démarrer le site public ni les modules métier.
+
+**Décision** : Implémenter `/[locale]/admin/congress` avec formulaire d'édition limité aux champs existants des modèles Prisma `Congress` et `CongressSettings`. Aucune migration schéma. Chargement du congrès seed `atccr-demo-2026`. RBAC via `congress.settings.read` (lecture) et `congress.settings.manage` (écriture) pour `super_admin` et `congress_admin`. Slug en lecture seule ; pas d'upload média ; pas de synchronisation site public.
+
+**Alternatives écartées** : Nouveaux champs BDD (contact email, etc.) ; page publique couplée ; CRUD multi-congrès.
+
+**Conséquences** : Fondation admin settings prête pour phases ultérieures. Design system page override persisté sous `design-system/atccr-platform/pages/congress-settings.md`.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -270,3 +285,4 @@
 | DEC-013 | Auth.js credentials + session JWT | accepté |
 | DEC-014 | ui-ux-pro-max source du design system | accepté |
 | DEC-015 | Admin shell navy/teal + typographie + i18n boundary | accepté |
+| DEC-016 | Paramètres congrès admin sans migration schéma | accepté |

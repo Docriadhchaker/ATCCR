@@ -53,5 +53,72 @@
       "checkin": "Badge generation and access control.",
       "certificates": "Participant certificates and attestations."
     }
+  },
+  "CongressSettings": {
+    "pageTitle": "Congress settings",
+    "pageDescription": "View and edit general settings for the demonstration congress.",
+    "backToDashboard": "Back to dashboard",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saveSuccess": "Congress settings have been saved.",
+    "saveHint": "Only existing schema fields are editable. No public site sync yet.",
+    "slugReadOnlyHelper": "Read-only technical identifier — do not change to avoid breaking links.",
+    "sections": {
+      "general": "General information",
+      "generalDescription": "Congress name, dates, venue, and publication status.",
+      "hero": "Hero content (public site)",
+      "heroDescription": "Welcome copy planned for the public homepage — not published in Phase 0.",
+      "schedule": "Registration and submission windows",
+      "scheduleDescription": "Opening and closing dates for participant and scientific workflows.",
+      "branding": "Brand colors",
+      "brandingDescription": "Primary and secondary colors used by the congress theme."
+    },
+    "fields": {
+      "slug": "Slug",
+      "nameFr": "Congress name (FR)",
+      "nameEn": "Congress name (EN)",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "venue": "Venue",
+      "city": "City",
+      "country": "Country",
+      "format": "Format",
+      "status": "Publication status",
+      "heroTitleFr": "Hero title (FR)",
+      "heroTitleEn": "Hero title (EN)",
+      "heroSubtitleFr": "Hero subtitle (FR)",
+      "heroSubtitleEn": "Hero subtitle (EN)",
+      "heroDescriptionFr": "Hero description (FR)",
+      "heroDescriptionEn": "Hero description (EN)",
+      "registrationOpensAt": "Registration opens",
+      "registrationClosesAt": "Registration closes",
+      "earlyBirdDeadline": "Early bird deadline",
+      "submissionOpensAt": "Submissions open",
+      "submissionClosesAt": "Submissions close",
+      "certificateAvailableAt": "Certificates available from",
+      "primaryColor": "Primary color",
+      "secondaryColor": "Secondary color"
+    },
+    "format": {
+      "onsite": "On-site",
+      "hybrid": "Hybrid",
+      "online": "Online"
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "errors": {
+      "required": "This field is required.",
+      "invalidDate": "Invalid date.",
+      "invalidColor": "Invalid hex color (e.g. #0F2B5B).",
+      "validation": "Please fix the highlighted fields.",
+      "forbidden": "You do not have permission to edit these settings.",
+      "notFound": "Congress not found.",
+      "generic": "Something went wrong. Please try again.",
+      "endDateBeforeStart": "End date must be on or after the start date.",
+      "closesBeforeOpens": "Closing date must be after the opening date."
+    }
   }
 }
