@@ -3,5 +3,23 @@
     "title": "ATCCR Congress Platform",
     "subtitle": "Medical scientific congress management — development environment",
     "placeholder": "Temporary homepage. Final content will be managed from the admin back-office."
+  },
+  "Auth": {
+    "title": "Sign in",
+    "subtitle": "Access the congress admin area.",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "invalidCredentials": "Invalid email or password.",
+    "genericError": "Something went wrong. Please try again.",
+    "accessDeniedTitle": "Access denied",
+    "accessDeniedMessage": "You do not have permission to access this area.",
+    "backToLogin": "Back to sign in"
+  },
+  "Admin": {
+    "title": "Administration",
+    "protectedMessage": "Protected area — Auth.js and RBAC foundation (Phase 0).",
+    "signedInAs": "Signed in as {email}"
   }
 }

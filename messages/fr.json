@@ -3,5 +3,23 @@
     "title": "Plateforme congrès ATCCR",
     "subtitle": "Gestion du congrès médical scientifique — environnement de développement",
     "placeholder": "Page d'accueil provisoire. Le contenu final sera configuré depuis le back-office."
+  },
+  "Auth": {
+    "title": "Connexion",
+    "subtitle": "Accédez à l'espace administrateur du congrès.",
+    "emailLabel": "Adresse e-mail",
+    "passwordLabel": "Mot de passe",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion en cours…",
+    "invalidCredentials": "E-mail ou mot de passe incorrect.",
+    "genericError": "Une erreur est survenue. Veuillez réessayer.",
+    "accessDeniedTitle": "Accès refusé",
+    "accessDeniedMessage": "Vous n'avez pas les droits nécessaires pour accéder à cette zone.",
+    "backToLogin": "Retour à la connexion"
+  },
+  "Admin": {
+    "title": "Administration",
+    "protectedMessage": "Zone protégée — fondation Auth.js et RBAC (Phase 0).",
+    "signedInAs": "Connecté en tant que {email}"
   }
 }

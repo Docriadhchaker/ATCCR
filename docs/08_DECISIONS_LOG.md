@@ -202,6 +202,21 @@
 
 ---
 
+## DEC-013 — Auth.js credentials + session JWT (Phase 0)
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Phase 0 Step D1 requiert une fondation auth sans Supabase Auth, sans inscription publique, et compatible avec le middleware Next.js (Edge).
+
+**Décision** : Auth.js v5 avec provider `Credentials` (email/mot de passe), vérification bcrypt côté serveur, stratégie de session **JWT** (pas de table Session Prisma). La session inclut `user.id`, `user.email`, `user.roles`, `user.congressId`, `user.locale`. Le hash mot de passe n'est jamais exposé en session. Mot de passe demo via `DEMO_ADMIN_PASSWORD` (local, seed uniquement).
+
+**Alternatives écartées** : Supabase Auth ; adapter Prisma Session (complexité Phase 0) ; OAuth providers (hors périmètre).
+
+**Conséquences** : RBAC minimal côté middleware (JWT) + policies serveur. Re-seed met à jour le hash demo. Migration vers sessions DB possible en phase ultérieure si requis.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -218,3 +233,4 @@
 | DEC-010 | Gouvernance avant code | accepté |
 | DEC-011 | Sessions de programme bilingues | accepté |
 | DEC-012 | Statut de paiement sponsor dédié | accepté |
+| DEC-013 | Auth.js credentials + session JWT | accepté |

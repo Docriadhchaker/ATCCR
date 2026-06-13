@@ -39,11 +39,42 @@ Open [http://localhost:3000](http://localhost:3000) — you will be redirected t
 |----------|-------------|
 | `DATABASE_URL` | PostgreSQL connection string (pooler URL for Supabase app queries) |
 | `DIRECT_URL` | Direct PostgreSQL URL for Prisma migrations (Supabase port 5432) |
-| `AUTH_SECRET` | Secret for Auth.js sessions (required in later Phase 0 steps) |
+| `AUTH_SECRET` | Secret for Auth.js sessions |
+| `AUTH_URL` | Auth.js base URL, e.g. `http://localhost:3000` |
 | `NEXT_PUBLIC_APP_URL` | Public app URL, e.g. `http://localhost:3000` |
 | `STORAGE_LOCAL_PATH` | Local file storage directory, default `./storage` |
+| `DEMO_ADMIN_PASSWORD` | **Local only** — password for the fake demo super admin seed user (never commit) |
 
 See `.env.example` for placeholders. **Never commit real credentials.**
+
+## Authentication (Phase 0 Step D1)
+
+Auth.js with email/password credentials (not Supabase Auth). Public registration is
+not implemented yet.
+
+### Demo super admin setup
+
+1. Add a strong `DEMO_ADMIN_PASSWORD` to your local `.env` (not committed).
+2. Ensure `AUTH_SECRET` and database URLs are set.
+3. Run the seed to hash and store the demo password:
+
+```bash
+npm run db:seed
+```
+
+4. Start the dev server and sign in:
+
+| Field | Value |
+|-------|-------|
+| URL | `http://localhost:3000/fr/login` (or `/en/login`) |
+| Email | `demo.superadmin@example.com` |
+| Password | your local `DEMO_ADMIN_PASSWORD` |
+
+After sign-in, `super_admin` users are redirected to `/[locale]/admin`. Only
+`super_admin` and `congress_admin` can access admin routes; others see access denied.
+
+If `DEMO_ADMIN_PASSWORD` is missing, the seed fails with a clear message and does
+not print any secret values.
 
 ## Development commands
 

@@ -1,6 +1,20 @@
 import { PrismaClient, RoleCode } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
+
+const BCRYPT_ROUNDS = 12;
+
+function requireDemoAdminPassword(): string {
+  const password = process.env.DEMO_ADMIN_PASSWORD?.trim();
+  if (!password) {
+    console.error(
+      "Seed failed: DEMO_ADMIN_PASSWORD is missing or empty. Set it in your local .env file.",
+    );
+    process.exit(1);
+  }
+  return password;
+}
 
 const ROLES: Array<{ code: RoleCode; labelFr: string; labelEn: string }> = [
   { code: "super_admin", labelFr: "Super administrateur", labelEn: "Super Admin" },
@@ -174,12 +188,14 @@ async function seedDemoCongress() {
 
 async function seedDemoSuperAdmin(congressId: string) {
   const demoEmail = "demo.superadmin@example.com";
+  const passwordHash = await bcrypt.hash(requireDemoAdminPassword(), BCRYPT_ROUNDS);
 
   const user = await prisma.user.upsert({
     where: { email: demoEmail },
-    update: {},
+    update: { passwordHash },
     create: {
       email: demoEmail,
+      passwordHash,
       locale: "fr",
       status: "active",
       profile: {
