@@ -19,7 +19,39 @@
   },
   "Admin": {
     "title": "Administration",
+    "brand": "ATCCR Admin",
+    "dashboardTitle": "Tableau de bord",
     "protectedMessage": "Zone protégée — fondation Auth.js et RBAC (Phase 0).",
-    "signedInAs": "Connecté en tant que {email}"
+    "protectedArea": "Zone protégée",
+    "signedInAs": "Connecté en tant que {email}",
+    "signedInAsLabel": "Connecté en tant que",
+    "logout": "Se déconnecter",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "skipToContent": "Aller au contenu principal",
+    "comingSoon": "Bientôt disponible",
+    "comingSoonShort": "Bientôt",
+    "modulesSectionLabel": "Modules de la plateforme",
+    "placeholderNote": "Les cartes ci-dessus sont des espaces réservés. Les modules seront activés dans les phases suivantes.",
+    "nav": {
+      "ariaLabel": "Navigation administration",
+      "dashboard": "Tableau de bord",
+      "congressOverview": "Aperçu du congrès",
+      "registrations": "Inscriptions",
+      "payments": "Paiements",
+      "submissions": "Soumissions scientifiques",
+      "program": "Programme",
+      "checkin": "Badges et check-in",
+      "certificates": "Attestations"
+    },
+    "moduleDescriptions": {
+      "congressOverview": "Paramètres généraux et informations du congrès.",
+      "registrations": "Gestion des inscriptions des participants.",
+      "payments": "Suivi des paiements et des preuves.",
+      "submissions": "Dépôt et évaluation des travaux scientifiques.",
+      "program": "Sessions, intervenants et planning.",
+      "checkin": "Génération de badges et contrôle d'accès.",
+      "certificates": "Attestations et certificats des participants."
+    }
   }
 }

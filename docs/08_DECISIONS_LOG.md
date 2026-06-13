@@ -217,6 +217,21 @@
 
 ---
 
+## DEC-014 — `ui-ux-pro-max` comme source du design system UI
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Phase 0 Step D2 construit le shell admin et prépare les interfaces admin/publiques. Besoin d'une référence design cohérente et réutilisable.
+
+**Décision** : Utiliser la compétence Cursor `ui-ux-pro-max` pour générer et persister le design system sous `design-system/atccr-platform/` (`MASTER.md` + overrides par page). Ces fichiers servent de référence UI. La palette reste celle de `docs/05_UI_UX_GUIDELINES.md` (navy `#0F2B5B`, teal) déjà définie dans `globals.css` ; le design system complète sans remplacer la charte médicale validée. Icônes Lucide uniquement, pas d'emoji.
+
+**Alternatives écartées** : Concevoir l'UI sans référence formalisée ; adopter intégralement la palette teal proposée par le générateur (s'écarterait de la charte médicale figée).
+
+**Conséquences** : Toute nouvelle page UI consulte `design-system/atccr-platform/pages/[page].md` puis `MASTER.md`. Cohérence visuelle et accessibilité (WCAG, focus, responsive) systématisées.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -234,3 +249,4 @@
 | DEC-011 | Sessions de programme bilingues | accepté |
 | DEC-012 | Statut de paiement sponsor dédié | accepté |
 | DEC-013 | Auth.js credentials + session JWT | accepté |
+| DEC-014 | ui-ux-pro-max source du design system | accepté |

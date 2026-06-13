@@ -19,7 +19,39 @@
   },
   "Admin": {
     "title": "Administration",
+    "brand": "ATCCR Admin",
+    "dashboardTitle": "Dashboard",
     "protectedMessage": "Protected area — Auth.js and RBAC foundation (Phase 0).",
-    "signedInAs": "Signed in as {email}"
+    "protectedArea": "Protected area",
+    "signedInAs": "Signed in as {email}",
+    "signedInAsLabel": "Signed in as",
+    "logout": "Sign out",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to main content",
+    "comingSoon": "Coming soon",
+    "comingSoonShort": "Soon",
+    "modulesSectionLabel": "Platform modules",
+    "placeholderNote": "The cards above are placeholders. Modules will be enabled in later phases.",
+    "nav": {
+      "ariaLabel": "Admin navigation",
+      "dashboard": "Dashboard",
+      "congressOverview": "Congress overview",
+      "registrations": "Registrations",
+      "payments": "Payments",
+      "submissions": "Scientific submissions",
+      "program": "Program",
+      "checkin": "Badges and check-in",
+      "certificates": "Certificates"
+    },
+    "moduleDescriptions": {
+      "congressOverview": "General congress settings and information.",
+      "registrations": "Manage participant registrations.",
+      "payments": "Track payments and proofs.",
+      "submissions": "Scientific work submission and evaluation.",
+      "program": "Sessions, speakers, and scheduling.",
+      "checkin": "Badge generation and access control.",
+      "certificates": "Participant certificates and attestations."
+    }
   }
 }

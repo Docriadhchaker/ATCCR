@@ -2,7 +2,7 @@
 
 import { AuthError } from "next-auth";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 
 export type LoginActionState = {
   error?: "invalidCredentials" | "generic";
@@ -35,4 +35,8 @@ export async function loginAction(
   }
 
   return {};
+}
+
+export async function logoutAction(locale: string): Promise<void> {
+  await signOut({ redirectTo: `/${locale}/login` });
 }
