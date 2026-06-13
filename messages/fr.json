@@ -120,5 +120,86 @@
       "endDateBeforeStart": "La date de fin doit être postérieure ou égale à la date de début.",
       "closesBeforeOpens": "La date de fermeture doit être postérieure à la date d'ouverture."
     }
+  },
+  "PublicLanding": {
+    "nav": {
+      "ariaLabel": "Navigation principale",
+      "mobileAriaLabel": "Navigation mobile",
+      "openMenu": "Ouvrir le menu",
+      "closeMenu": "Fermer le menu",
+      "languageSwitch": "Passer en {locale}",
+      "about": "À propos",
+      "themes": "Thématiques",
+      "program": "Programme",
+      "speakers": "Intervenants",
+      "sponsors": "Partenaires",
+      "cta": "S'inscrire"
+    },
+    "hero": {
+      "defaultSubtitle": "Congrès médical scientifique",
+      "registerComingSoon": "Inscription — bientôt disponible",
+      "viewProgram": "Voir le programme"
+    },
+    "info": {
+      "sectionLabel": "Informations clés du congrès",
+      "dates": "Dates",
+      "venue": "Lieu",
+      "location": "Ville / pays",
+      "format": "Format"
+    },
+    "format": {
+      "onsite": "Présentiel",
+      "hybrid": "Hybride",
+      "online": "En ligne"
+    },
+    "about": {
+      "title": "À propos du congrès",
+      "description": "Présentation générale du congrès médical scientifique ATCCR.",
+      "fallback": "Les informations détaillées du congrès seront publiées prochainement."
+    },
+    "themes": {
+      "title": "Thématiques scientifiques",
+      "description": "Aperçu des axes scientifiques du congrès.",
+      "empty": "Les thématiques seront annoncées prochainement."
+    },
+    "program": {
+      "title": "Programme",
+      "description": "Aperçu des sessions scientifiques prévues.",
+      "empty": "Le programme détaillé sera publié prochainement."
+    },
+    "speakers": {
+      "title": "Intervenants",
+      "description": "Aperçu des experts invités au congrès.",
+      "empty": "La liste des intervenants sera publiée prochainement."
+    },
+    "sponsors": {
+      "title": "Partenaires et sponsors",
+      "description": "Institutions et partenaires soutenant le congrès.",
+      "empty": "Les partenaires seront annoncés prochainement."
+    },
+    "sponsorCategory": {
+      "institutional": "Institutionnel",
+      "platinum": "Platinum",
+      "gold": "Gold",
+      "silver": "Silver",
+      "bronze": "Bronze",
+      "scientific_partner": "Partenaire scientifique",
+      "media_partner": "Partenaire média",
+      "exhibitor": "Exposant"
+    },
+    "cta": {
+      "title": "Participer au congrès",
+      "description": "Les parcours d'inscription et de soumission scientifique seront activés dans les prochaines phases.",
+      "registrationComingSoon": "Inscription — bientôt disponible",
+      "registrationHint": "La billetterie en ligne et les tarifs seront disponibles prochainement.",
+      "submissionComingSoon": "Soumission scientifique — bientôt disponible",
+      "submissionHint": "Le dépôt des travaux scientifiques sera ouvert prochainement.",
+      "adminLogin": "Connexion administrateur"
+    },
+    "footer": {
+      "tagline": "Plateforme de gestion du congrès médical scientifique ATCCR — environnement de démonstration.",
+      "adminLogin": "Espace administrateur",
+      "copyright": "© ATCCR — Données de démonstration fictives."
+    }
   }
 }

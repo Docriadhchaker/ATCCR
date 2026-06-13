@@ -120,5 +120,86 @@
       "endDateBeforeStart": "End date must be on or after the start date.",
       "closesBeforeOpens": "Closing date must be after the opening date."
     }
+  },
+  "PublicLanding": {
+    "nav": {
+      "ariaLabel": "Main navigation",
+      "mobileAriaLabel": "Mobile navigation",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "languageSwitch": "Switch to {locale}",
+      "about": "About",
+      "themes": "Themes",
+      "program": "Program",
+      "speakers": "Speakers",
+      "sponsors": "Partners",
+      "cta": "Register"
+    },
+    "hero": {
+      "defaultSubtitle": "Medical scientific congress",
+      "registerComingSoon": "Registration — coming soon",
+      "viewProgram": "View program"
+    },
+    "info": {
+      "sectionLabel": "Key congress information",
+      "dates": "Dates",
+      "venue": "Venue",
+      "location": "City / country",
+      "format": "Format"
+    },
+    "format": {
+      "onsite": "On-site",
+      "hybrid": "Hybrid",
+      "online": "Online"
+    },
+    "about": {
+      "title": "About the congress",
+      "description": "General overview of the ATCCR medical scientific congress.",
+      "fallback": "Detailed congress information will be published soon."
+    },
+    "themes": {
+      "title": "Scientific themes",
+      "description": "Overview of the congress scientific tracks.",
+      "empty": "Scientific themes will be announced soon."
+    },
+    "program": {
+      "title": "Program",
+      "description": "Preview of planned scientific sessions.",
+      "empty": "The detailed program will be published soon."
+    },
+    "speakers": {
+      "title": "Speakers",
+      "description": "Preview of experts invited to the congress.",
+      "empty": "The speaker list will be published soon."
+    },
+    "sponsors": {
+      "title": "Partners and sponsors",
+      "description": "Institutions and partners supporting the congress.",
+      "empty": "Partners will be announced soon."
+    },
+    "sponsorCategory": {
+      "institutional": "Institutional",
+      "platinum": "Platinum",
+      "gold": "Gold",
+      "silver": "Silver",
+      "bronze": "Bronze",
+      "scientific_partner": "Scientific partner",
+      "media_partner": "Media partner",
+      "exhibitor": "Exhibitor"
+    },
+    "cta": {
+      "title": "Join the congress",
+      "description": "Registration and scientific submission workflows will be enabled in upcoming phases.",
+      "registrationComingSoon": "Registration — coming soon",
+      "registrationHint": "Online ticketing and pricing will be available soon.",
+      "submissionComingSoon": "Scientific submission — coming soon",
+      "submissionHint": "Abstract submission will open soon.",
+      "adminLogin": "Admin sign in"
+    },
+    "footer": {
+      "tagline": "ATCCR medical scientific congress management platform — demonstration environment.",
+      "adminLogin": "Admin area",
+      "copyright": "© ATCCR — Fictional demo data only."
+    }
   }
 }

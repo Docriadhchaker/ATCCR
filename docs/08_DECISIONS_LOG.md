@@ -266,6 +266,21 @@
 
 ---
 
+## DEC-017 — Landing publique read-only sans workflows publics (Phase 0 D4)
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Phase 0 Step D4 requiert une page publique professionnelle pour le congrès actif, alimentée par les données existantes (paramètres admin D3), sans démarrer inscription, soumissions scientifiques, paiements ni CRUD public.
+
+**Décision** : Implémenter `/[locale]` comme landing read-only pour le congrès seed `atccr-demo-2026`. Source de données : modèles Prisma existants (`Congress`, `CongressSettings`, aperçus optionnels `Theme`, `Session`, `Speaker`, `Sponsor`). CTAs inscription et soumission affichées en **coming soon** (désactivées). Lien connexion admin vers `/[locale]/login`. Aucune migration schéma ; pas de modification Auth.js. Palette navy/teal DEC-015 via `docs/05` et `globals.css` ; override page `public-landing.md`.
+
+**Alternatives écartées** : Formulaires inscription/soumission ; métriques fictives ; champs BDD inventés ; Supabase Auth.
+
+**Conséquences** : Site public visible sans authentification. Workflows participant et scientifique reportés aux phases ultérieures. Design system page override persisté sous `design-system/atccr-platform/pages/public-landing.md`.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -286,3 +301,4 @@
 | DEC-014 | ui-ux-pro-max source du design system | accepté |
 | DEC-015 | Admin shell navy/teal + typographie + i18n boundary | accepté |
 | DEC-016 | Paramètres congrès admin sans migration schéma | accepté |
+| DEC-017 | Landing publique read-only sans workflows publics | accepté |
