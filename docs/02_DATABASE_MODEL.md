@@ -196,8 +196,10 @@ Créneau global du programme scientifique.
 |---------|------|-------|
 | id | UUID | PK |
 | congress_id | UUID | FK |
-| title | String | |
-| description | Text? | |
+| title_fr | String | titre officiel (FR) |
+| title_en | String? | titre officiel (EN) |
+| description_fr | Text? | description (FR) |
+| description_en | Text? | description (EN) |
 | day | Date | |
 | start_at | DateTime | |
 | end_at | DateTime | |
@@ -294,7 +296,7 @@ Contrainte unique : `(user_id, session_id)`.
 | contact_phone | String? | |
 | package_name | String? | |
 | amount | Decimal? | |
-| payment_status | Enum | aligné paiements |
+| payment_status | Enum `SponsorPaymentStatus` | not_paid, partially_paid, paid, cancelled, refunded, in_kind |
 | booth_number | String? | |
 | contract_media_id | UUID? | |
 | invoice_media_id | UUID? | |
@@ -344,7 +346,7 @@ Contrainte unique : `(user_id, session_id)`.
 | Colonne | Type | Notes |
 |---------|------|-------|
 | id | UUID | PK |
-| ticket_type_id | UUID | FK |
+| ticket_type_id | UUID | FK → `ticket_types` (appartient à TicketType, onDelete: Cascade) |
 | name_fr/en | String | |
 | price | Decimal | |
 | included | Boolean | |

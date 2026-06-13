@@ -172,6 +172,36 @@
 
 ---
 
+## DEC-011 — Sessions de programme bilingues au niveau base de données
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Le congrès est bilingue FR/EN. Les sessions officielles du programme doivent être affichables dans les deux langues sans table de traduction séparée pour le MVP.
+
+**Décision** : Le modèle `Session` stocke des champs bilingues : `titleFr` (obligatoire), `titleEn` (optionnel), `descriptionFr` (optionnel), `descriptionEn` (optionnel). Mapping base : `title_fr`, `title_en`, `description_fr`, `description_en`.
+
+**Alternatives écartées** : Champ `title`/`description` unilingue ; table de traduction dédiée (surdimensionnée pour le MVP).
+
+**Conséquences** : Cohérent avec les autres entités bilingues (`Congress`, `Theme`, `TicketType`). `Presentation.title` reste un champ unique (titre du travail scientifique dans sa langue d'origine, voir DEC-009).
+
+---
+
+## DEC-012 — Statut de paiement sponsor dédié
+
+**Date** : 2026-06-13
+**Statut** : accepté
+
+**Contexte** : Le statut de paiement d'un sponsor suit un cycle distinct de celui d'une inscription participant (acomptes, contributions en nature).
+
+**Décision** : `Sponsor.paymentStatus` utilise un enum dédié `SponsorPaymentStatus` (`not_paid`, `partially_paid`, `paid`, `cancelled`, `refunded`, `in_kind`), séparé de `RegistrationPaymentStatus`.
+
+**Alternatives écartées** : Réutiliser `RegistrationPaymentStatus` (sémantiquement inadapté aux partenariats).
+
+**Conséquences** : Les deux cycles de paiement évoluent indépendamment. Pas d'impact sur le `PaymentStatusService` des inscriptions.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -186,3 +216,5 @@
 | DEC-008 | Évaluateurs = users + rôle | accepté |
 | DEC-009 | Sessions vs présentations | accepté |
 | DEC-010 | Gouvernance avant code | accepté |
+| DEC-011 | Sessions de programme bilingues | accepté |
+| DEC-012 | Statut de paiement sponsor dédié | accepté |

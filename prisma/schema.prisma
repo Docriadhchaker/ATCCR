@@ -1,5 +1,4 @@
-// ATCCR Congress Platform — minimal Prisma setup (Step A).
-// Full models are added in Phase 0 Step B.
+// ATCCR Congress Platform — complete MVP database schema (Phase 0 Step B1).
 
 generator client {
   provider = "prisma-client-js"
@@ -9,4 +8,1182 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum UserStatus {
+  active
+  inactive
+  suspended
+}
+
+enum Locale {
+  fr
+  en
+}
+
+enum RoleCode {
+  super_admin
+  congress_admin
+  registration_manager
+  finance_manager
+  scientific_committee_admin
+  scientific_evaluator
+  speaker
+  resident_submitter
+  participant
+  sponsor
+  staff
+}
+
+enum CongressStatus {
+  draft
+  published
+  archived
+}
+
+enum CongressFormat {
+  onsite
+  hybrid
+  online
+}
+
+enum ParticipantCategory {
+  specialist
+  resident
+  student
+  paramedical
+  guest
+  speaker
+  scientific_committee
+  sponsor
+  press
+  staff
+}
+
+enum RegistrationStatus {
+  pending
+  confirmed
+  cancelled
+}
+
+enum RegistrationPaymentStatus {
+  not_paid
+  awaiting_payment
+  awaiting_proof_validation
+  paid_online
+  paid_manually
+  proof_accepted
+  proof_rejected
+  pay_on_site
+  cancelled
+  refunded
+  free_invited
+  exempted
+}
+
+enum Currency {
+  TND
+  EUR
+}
+
+enum PaymentMethod {
+  online
+  bank_transfer
+  manual
+  on_site
+  free
+  exempted
+}
+
+enum PaymentRecordStatus {
+  pending
+  processing
+  succeeded
+  failed
+  cancelled
+  refunded
+}
+
+enum ProofStatus {
+  pending
+  accepted
+  rejected
+}
+
+enum SubmitterGrade {
+  resident
+  intern
+  assistant
+  young_specialist
+  specialist
+}
+
+enum SubmissionStatus {
+  draft
+  submitted
+  pending
+  under_review
+  accepted
+  rejected
+  accepted_with_modifications
+  withdrawn
+  scheduled_in_program
+  certificate_authorized
+}
+
+enum SubmissionDecisionType {
+  accepted
+  rejected
+  accepted_with_modifications
+}
+
+enum EvaluationAssignmentStatus {
+  pending
+  in_progress
+  completed
+}
+
+enum SessionAccessType {
+  included
+  paid_option
+}
+
+enum SessionLanguage {
+  fr
+  en
+  both
+}
+
+enum SpeakerRoleType {
+  speaker
+  moderator
+  chairperson
+  trainer
+  international_guest
+  committee_member
+}
+
+enum SessionSpeakerRole {
+  speaker
+  moderator
+  chairperson
+}
+
+enum PresentationType {
+  oral
+  poster
+  video
+  case_study
+}
+
+enum PresentationStatus {
+  scheduled
+  presented
+  cancelled
+  no_show
+}
+
+enum BadgePrintStatus {
+  not_printed
+  printed
+  reprinted
+}
+
+enum CheckInAccessStatus {
+  granted
+  denied
+  warning
+}
+
+enum CertificateType {
+  participation
+  oral_presentation
+  poster
+  video_presentation
+  speaker
+  moderator
+  scientific_committee
+  masterclass_trainer
+}
+
+enum CertificateStatus {
+  draft
+  authorized
+  generated
+  revoked
+}
+
+enum MediaCategory {
+  sponsor_logo
+  partner_logo
+  institution_logo
+  speaker_photo
+  committee_photo
+  public_image
+  press_file
+  payment_proof
+  badge_template
+  certificate_template
+  official_poster
+}
+
+enum SponsorPaymentStatus {
+  not_paid
+  partially_paid
+  paid
+  cancelled
+  refunded
+  in_kind
+}
+
+enum SponsorCategory {
+  institutional
+  platinum
+  gold
+  silver
+  bronze
+  scientific_partner
+  media_partner
+  exhibitor
+}
+
+enum PressItemType {
+  article
+  video
+  interview
+  press_release
+  photo
+  publication
+}
+
+enum SubmissionFileType {
+  pdf
+  poster
+  image
+  video_link
+  video_file
+}
+
+enum EmailTemplateCode {
+  account_created
+  registration_confirmation
+  payment_pending
+  payment_validated
+  payment_rejected
+  online_payment_received
+  badge_available
+  submission_received
+  submission_under_review
+  submission_accepted
+  submission_rejected
+  modifications_requested
+  presentation_instructions
+  certificate_available
+  event_reminder
+  password_reset
+}
+
+// ---------------------------------------------------------------------------
+// Identity & access
+// ---------------------------------------------------------------------------
+
+model User {
+  id              String     @id @default(uuid()) @db.Uuid
+  email           String     @unique
+  passwordHash    String?    @map("password_hash")
+  locale          Locale     @default(fr)
+  status          UserStatus @default(active)
+  emailVerifiedAt DateTime?  @map("email_verified_at")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  profile UserProfile?
+
+  rolesAssigned UserRole[] @relation("UserRoleAssignedTo")
+  rolesGranted  UserRole[] @relation("UserRoleAssignedBy")
+  auditLogs     AuditLog[] @relation("AuditLogActor")
+
+  registrations           Registration[]
+  scientificSubmissions   ScientificSubmission[]
+  evaluationAssignments   EvaluationAssignment[]    @relation("EvaluationAssignmentEvaluator")
+  evaluationsAssigned     EvaluationAssignment[]    @relation("EvaluationAssignmentAssignedBy")
+  submissionDecisions     SubmissionDecision[]
+  submissionStatusChanges SubmissionStatusHistory[]
+  paymentValidations      Payment[]                 @relation("PaymentValidatedBy")
+  proofReviews            PaymentProof[]            @relation("PaymentProofReviewedBy")
+  paymentStatusChanges    PaymentStatusHistory[]    @relation("PaymentStatusTriggeredBy")
+  badgesScanned           CheckIn[]                 @relation("CheckInScannedBy")
+  presentationsValidated  Presentation[]            @relation("PresentationValidatedBy")
+  certificatesReceived    Certificate[]             @relation("CertificateRecipient")
+  certificatesAuthorized  Certificate[]             @relation("CertificateAuthorizedBy")
+  mediaUploads            MediaAsset[]              @relation("MediaAssetUploadedBy")
+  personalAgendaItems     PersonalAgendaItem[]
+  speakerProfile          Speaker?
+
+  @@map("users")
+}
+
+model UserProfile {
+  userId            String   @id @map("user_id") @db.Uuid
+  firstName         String   @map("first_name")
+  lastName          String   @map("last_name")
+  phone             String?
+  specialty         String?
+  professionalGrade String?  @map("professional_grade")
+  institution       String?
+  department        String?
+  country           String?
+  city              String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model Role {
+  id      String   @id @default(uuid()) @db.Uuid
+  code    RoleCode @unique
+  labelFr String   @map("label_fr")
+  labelEn String   @map("label_en")
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  roleId       String   @map("role_id") @db.Uuid
+  congressId   String   @map("congress_id") @db.Uuid
+  assignedById String?  @map("assigned_by_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user       User     @relation("UserRoleAssignedTo", fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  congress   Congress @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  assignedBy User?    @relation("UserRoleAssignedBy", fields: [assignedById], references: [id], onDelete: SetNull)
+
+  @@unique([userId, roleId, congressId])
+  @@index([congressId])
+  @@map("user_roles")
+}
+
+model Permission {
+  id          String  @id @default(uuid()) @db.Uuid
+  code        String  @unique
+  module      String
+  description String?
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String @id @default(uuid()) @db.Uuid
+  roleId       String @map("role_id") @db.Uuid
+  permissionId String @map("permission_id") @db.Uuid
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  congressId String?  @map("congress_id") @db.Uuid
+  actorId    String?  @map("actor_id") @db.Uuid
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id") @db.Uuid
+  metadata   Json?
+  ipAddress  String?  @map("ip_address")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  congress Congress? @relation(fields: [congressId], references: [id], onDelete: SetNull)
+  actor    User?     @relation("AuditLogActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([congressId, createdAt])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+// ---------------------------------------------------------------------------
+// Congress & public content
+// ---------------------------------------------------------------------------
+
+model Congress {
+  id        String         @id @default(uuid()) @db.Uuid
+  slug      String         @unique
+  nameFr    String         @map("name_fr")
+  nameEn    String         @map("name_en")
+  startDate DateTime       @map("start_date") @db.Date
+  endDate   DateTime       @map("end_date") @db.Date
+  venue     String
+  city      String
+  country   String
+  format    CongressFormat
+  status    CongressStatus @default(draft)
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+
+  settings              CongressSettings?
+  themes                Theme[]
+  navigationItems       NavigationItem[]
+  pressItems            PressItem[]
+  mediaAssets           MediaAsset[]
+  ticketTypes           TicketType[]
+  registrations         Registration[]
+  sponsors              Sponsor[]
+  sessions              Session[]
+  speakers              Speaker[]
+  scientificSubmissions ScientificSubmission[]
+  certificateTemplates  CertificateTemplate[]
+  certificates          Certificate[]
+  emailTemplates        EmailTemplate[]
+  auditLogs             AuditLog[]
+  userRoles             UserRole[]
+
+  @@map("congresses")
+}
+
+model CongressSettings {
+  congressId             String    @id @map("congress_id") @db.Uuid
+  logoMediaId            String?   @map("logo_media_id") @db.Uuid
+  faviconMediaId         String?   @map("favicon_media_id") @db.Uuid
+  primaryColor           String    @default("#0F2B5B") @map("primary_color")
+  secondaryColor         String    @default("#0D9488") @map("secondary_color")
+  heroTitleFr            String?   @map("hero_title_fr")
+  heroTitleEn            String?   @map("hero_title_en")
+  heroSubtitleFr         String?   @map("hero_subtitle_fr")
+  heroSubtitleEn         String?   @map("hero_subtitle_en")
+  heroDescriptionFr      String?   @map("hero_description_fr") @db.Text
+  heroDescriptionEn      String?   @map("hero_description_en") @db.Text
+  heroImageMediaId       String?   @map("hero_image_media_id") @db.Uuid
+  sectionVisibility      Json      @default("{}") @map("section_visibility")
+  keyFigures             Json      @default("{}") @map("key_figures")
+  registrationOpensAt    DateTime? @map("registration_opens_at")
+  registrationClosesAt   DateTime? @map("registration_closes_at")
+  earlyBirdDeadline      DateTime? @map("early_bird_deadline")
+  submissionOpensAt      DateTime? @map("submission_opens_at")
+  submissionClosesAt     DateTime? @map("submission_closes_at")
+  certificateAvailableAt DateTime? @map("certificate_available_at")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  congress       Congress    @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  logoMedia      MediaAsset? @relation("CongressSettingsLogo", fields: [logoMediaId], references: [id], onDelete: SetNull)
+  faviconMedia   MediaAsset? @relation("CongressSettingsFavicon", fields: [faviconMediaId], references: [id], onDelete: SetNull)
+  heroImageMedia MediaAsset? @relation("CongressSettingsHeroImage", fields: [heroImageMediaId], references: [id], onDelete: SetNull)
+
+  @@map("congress_settings")
+}
+
+model Theme {
+  id            String   @id @default(uuid()) @db.Uuid
+  congressId    String   @map("congress_id") @db.Uuid
+  titleFr       String   @map("title_fr")
+  titleEn       String   @map("title_en")
+  descriptionFr String?  @map("description_fr") @db.Text
+  descriptionEn String?  @map("description_en") @db.Text
+  icon          String?
+  displayOrder  Int      @default(0) @map("display_order")
+  visible       Boolean  @default(true)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  congress              Congress               @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  sessions              Session[]
+  scientificSubmissions ScientificSubmission[]
+
+  @@index([congressId, displayOrder])
+  @@map("themes")
+}
+
+model NavigationItem {
+  id           String   @id @default(uuid()) @db.Uuid
+  congressId   String   @map("congress_id") @db.Uuid
+  labelFr      String   @map("label_fr")
+  labelEn      String   @map("label_en")
+  path         String
+  displayOrder Int      @default(0) @map("display_order")
+  visible      Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  congress Congress @relation(fields: [congressId], references: [id], onDelete: Cascade)
+
+  @@index([congressId, displayOrder])
+  @@map("navigation_items")
+}
+
+model PressItem {
+  id               String        @id @default(uuid()) @db.Uuid
+  congressId       String        @map("congress_id") @db.Uuid
+  type             PressItemType
+  title            String
+  source           String?
+  url              String?
+  thumbnailMediaId String?       @map("thumbnail_media_id") @db.Uuid
+  language         Locale
+  publishedAt      DateTime?     @map("published_at")
+  visible          Boolean       @default(true)
+  displayOrder     Int           @default(0) @map("display_order")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  congress  Congress    @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  thumbnail MediaAsset? @relation("PressItemThumbnail", fields: [thumbnailMediaId], references: [id], onDelete: SetNull)
+
+  @@index([congressId, displayOrder])
+  @@map("press_items")
+}
+
+// ---------------------------------------------------------------------------
+// Media
+// ---------------------------------------------------------------------------
+
+model MediaAsset {
+  id               String        @id @default(uuid()) @db.Uuid
+  congressId       String?       @map("congress_id") @db.Uuid
+  storageKey       String        @map("storage_key")
+  originalFilename String        @map("original_filename")
+  mimeType         String        @map("mime_type")
+  sizeBytes        Int           @map("size_bytes")
+  category         MediaCategory
+  tags             String[]
+  linkedEntityType String?       @map("linked_entity_type")
+  linkedEntityId   String?       @map("linked_entity_id") @db.Uuid
+  uploadedById     String?       @map("uploaded_by_id") @db.Uuid
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  congress   Congress? @relation(fields: [congressId], references: [id], onDelete: SetNull)
+  uploadedBy User?     @relation("MediaAssetUploadedBy", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  congressSettingsLogo           CongressSettings[]    @relation("CongressSettingsLogo")
+  congressSettingsFavicon        CongressSettings[]    @relation("CongressSettingsFavicon")
+  congressSettingsHeroImage      CongressSettings[]    @relation("CongressSettingsHeroImage")
+  pressItemThumbnails            PressItem[]           @relation("PressItemThumbnail")
+  speakerPhotos                  Speaker[]             @relation("SpeakerPhoto")
+  sponsorLogos                   Sponsor[]             @relation("SponsorLogo")
+  sponsorContracts               Sponsor[]             @relation("SponsorContract")
+  sponsorInvoices                Sponsor[]             @relation("SponsorInvoice")
+  paymentProofs                  PaymentProof[]
+  submissionFiles                SubmissionFile[]
+  badgeGeneratedFiles            Badge[]               @relation("BadgeGeneratedFile")
+  certificateGeneratedFiles      Certificate[]         @relation("CertificateGeneratedFile")
+  certificateTemplateBackgrounds CertificateTemplate[] @relation("CertificateTemplateBackground")
+  certificateTemplateSignatures  CertificateTemplate[] @relation("CertificateTemplateSignature")
+  certificateTemplateStamps      CertificateTemplate[] @relation("CertificateTemplateStamp")
+
+  @@index([congressId, category])
+  @@index([linkedEntityType, linkedEntityId])
+  @@map("media_assets")
+}
+
+// ---------------------------------------------------------------------------
+// Program
+// ---------------------------------------------------------------------------
+
+model SessionType {
+  id      String @id @default(uuid()) @db.Uuid
+  code    String @unique
+  labelFr String @map("label_fr")
+  labelEn String @map("label_en")
+
+  sessions Session[]
+
+  @@map("session_types")
+}
+
+model Session {
+  id            String            @id @default(uuid()) @db.Uuid
+  congressId    String            @map("congress_id") @db.Uuid
+  titleFr       String            @map("title_fr")
+  titleEn       String?           @map("title_en")
+  descriptionFr String?           @map("description_fr") @db.Text
+  descriptionEn String?           @map("description_en") @db.Text
+  day           DateTime          @db.Date
+  startAt       DateTime          @map("start_at")
+  endAt         DateTime          @map("end_at")
+  room          String?
+  sessionTypeId String            @map("session_type_id") @db.Uuid
+  themeId       String?           @map("theme_id") @db.Uuid
+  language      SessionLanguage   @default(both)
+  isPublic      Boolean           @default(true) @map("is_public")
+  capacity      Int?
+  accessType    SessionAccessType @default(included) @map("access_type")
+  sponsorId     String?           @map("sponsor_id") @db.Uuid
+  displayOrder  Int               @default(0) @map("display_order")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+
+  congress            Congress             @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  sessionType         SessionType          @relation(fields: [sessionTypeId], references: [id])
+  theme               Theme?               @relation(fields: [themeId], references: [id], onDelete: SetNull)
+  sponsor             Sponsor?             @relation(fields: [sponsorId], references: [id], onDelete: SetNull)
+  sessionSpeakers     SessionSpeaker[]
+  presentations       Presentation[]
+  checkIns            CheckIn[]
+  personalAgendaItems PersonalAgendaItem[]
+  certificates        Certificate[]
+
+  @@index([congressId, day, startAt])
+  @@map("sessions")
+}
+
+model Speaker {
+  id              String          @id @default(uuid()) @db.Uuid
+  congressId      String          @map("congress_id") @db.Uuid
+  userId          String?         @unique @map("user_id") @db.Uuid
+  photoMediaId    String?         @map("photo_media_id") @db.Uuid
+  fullName        String          @map("full_name")
+  academicTitle   String?         @map("academic_title")
+  specialty       String?
+  institution     String?
+  department      String?
+  country         String?
+  city            String?
+  bioShort        String?         @map("bio_short") @db.Text
+  bioLong         String?         @map("bio_long") @db.Text
+  linkedinUrl     String?         @map("linkedin_url")
+  orcid           String?
+  researchgateUrl String?         @map("researchgate_url")
+  websiteUrl      String?         @map("website_url")
+  roleType        SpeakerRoleType @default(speaker) @map("role_type")
+  visible         Boolean         @default(true)
+  displayOrder    Int             @default(0) @map("display_order")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  congress        Congress         @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  user            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  photoMedia      MediaAsset?      @relation("SpeakerPhoto", fields: [photoMediaId], references: [id], onDelete: SetNull)
+  sessionSpeakers SessionSpeaker[]
+
+  @@index([congressId, displayOrder])
+  @@map("speakers")
+}
+
+model SessionSpeaker {
+  id        String             @id @default(uuid()) @db.Uuid
+  sessionId String             @map("session_id") @db.Uuid
+  speakerId String             @map("speaker_id") @db.Uuid
+  role      SessionSpeakerRole @default(speaker)
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  speaker Speaker @relation(fields: [speakerId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, speakerId, role])
+  @@map("session_speakers")
+}
+
+model Presentation {
+  id                     String             @id @default(uuid()) @db.Uuid
+  sessionId              String             @map("session_id") @db.Uuid
+  scientificSubmissionId String?            @map("scientific_submission_id") @db.Uuid
+  title                  String
+  presentationType       PresentationType   @map("presentation_type")
+  scheduledStart         DateTime?          @map("scheduled_start")
+  scheduledEnd           DateTime?          @map("scheduled_end")
+  durationMinutes        Int?               @map("duration_minutes")
+  displayOrder           Int                @default(0) @map("display_order")
+  status                 PresentationStatus @default(scheduled)
+  presentedAt            DateTime?          @map("presented_at")
+  presentedValidatedById String?            @map("presented_validated_by_id") @db.Uuid
+  createdAt              DateTime           @default(now()) @map("created_at")
+  updatedAt              DateTime           @updatedAt @map("updated_at")
+
+  session              Session               @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  scientificSubmission ScientificSubmission? @relation(fields: [scientificSubmissionId], references: [id], onDelete: SetNull)
+  presentedValidatedBy User?                 @relation("PresentationValidatedBy", fields: [presentedValidatedById], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, displayOrder])
+  @@map("presentations")
+}
+
+model PersonalAgendaItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  sessionId String   @map("session_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sessionId])
+  @@map("personal_agenda_items")
+}
+
+// ---------------------------------------------------------------------------
+// Sponsors
+// ---------------------------------------------------------------------------
+
+model Sponsor {
+  id              String               @id @default(uuid()) @db.Uuid
+  congressId      String               @map("congress_id") @db.Uuid
+  name            String
+  logoMediaId     String?              @map("logo_media_id") @db.Uuid
+  category        SponsorCategory
+  websiteUrl      String?              @map("website_url")
+  description     String?              @db.Text
+  contactName     String?              @map("contact_name")
+  contactEmail    String?              @map("contact_email")
+  contactPhone    String?              @map("contact_phone")
+  packageName     String?              @map("package_name")
+  amount          Decimal?             @db.Decimal(12, 2)
+  paymentStatus   SponsorPaymentStatus @default(not_paid) @map("payment_status")
+  boothNumber     String?              @map("booth_number")
+  contractMediaId String?              @map("contract_media_id") @db.Uuid
+  invoiceMediaId  String?              @map("invoice_media_id") @db.Uuid
+  visible         Boolean              @default(true)
+  displayOrder    Int                  @default(0) @map("display_order")
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
+
+  congress      Congress    @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  logoMedia     MediaAsset? @relation("SponsorLogo", fields: [logoMediaId], references: [id], onDelete: SetNull)
+  contractMedia MediaAsset? @relation("SponsorContract", fields: [contractMediaId], references: [id], onDelete: SetNull)
+  invoiceMedia  MediaAsset? @relation("SponsorInvoice", fields: [invoiceMediaId], references: [id], onDelete: SetNull)
+  sessions      Session[]
+
+  @@index([congressId, displayOrder])
+  @@map("sponsors")
+}
+
+// ---------------------------------------------------------------------------
+// Registration & payments
+// ---------------------------------------------------------------------------
+
+model TicketType {
+  id                 String                @id @default(uuid()) @db.Uuid
+  congressId         String                @map("congress_id") @db.Uuid
+  nameFr             String                @map("name_fr")
+  nameEn             String                @map("name_en")
+  descriptionFr      String?               @map("description_fr") @db.Text
+  descriptionEn      String?               @map("description_en") @db.Text
+  eligibleCategories ParticipantCategory[] @map("eligible_categories")
+  currency           Currency
+  price              Decimal               @db.Decimal(12, 2)
+  earlyBirdPrice     Decimal?              @map("early_bird_price") @db.Decimal(12, 2)
+  earlyBirdDeadline  DateTime?             @map("early_bird_deadline")
+  onSitePrice        Decimal?              @map("on_site_price") @db.Decimal(12, 2)
+  quota              Int?
+  active             Boolean               @default(true)
+  createdAt          DateTime              @default(now()) @map("created_at")
+  updatedAt          DateTime              @updatedAt @map("updated_at")
+
+  congress      Congress       @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  options       TicketOption[]
+  registrations Registration[]
+
+  @@index([congressId, active])
+  @@map("ticket_types")
+}
+
+model TicketOption {
+  id           String   @id @default(uuid()) @db.Uuid
+  ticketTypeId String   @map("ticket_type_id") @db.Uuid
+  nameFr       String   @map("name_fr")
+  nameEn       String   @map("name_en")
+  price        Decimal  @db.Decimal(12, 2)
+  included     Boolean  @default(false)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  ticketType          TicketType           @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
+  registrationOptions RegistrationOption[]
+
+  @@map("ticket_options")
+}
+
+model Registration {
+  id                  String                    @id @default(uuid()) @db.Uuid
+  reference           String                    @unique
+  congressId          String                    @map("congress_id") @db.Uuid
+  userId              String                    @map("user_id") @db.Uuid
+  participantCategory ParticipantCategory       @map("participant_category")
+  ticketTypeId        String                    @map("ticket_type_id") @db.Uuid
+  status              RegistrationStatus        @default(pending)
+  paymentStatus       RegistrationPaymentStatus @default(not_paid) @map("payment_status")
+  subtotal            Decimal                   @db.Decimal(12, 2)
+  vatAmount           Decimal                   @default(0) @map("vat_amount") @db.Decimal(12, 2)
+  totalAmount         Decimal                   @map("total_amount") @db.Decimal(12, 2)
+  billingInfo         Json                      @default("{}") @map("billing_info")
+  consentAt           DateTime?                 @map("consent_at")
+  termsAcceptedAt     DateTime?                 @map("terms_accepted_at")
+  deletedAt           DateTime?                 @map("deleted_at")
+  createdAt           DateTime                  @default(now()) @map("created_at")
+  updatedAt           DateTime                  @updatedAt @map("updated_at")
+
+  congress             Congress               @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  user                 User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticketType           TicketType             @relation(fields: [ticketTypeId], references: [id])
+  options              RegistrationOption[]
+  payments             Payment[]
+  paymentStatusHistory PaymentStatusHistory[]
+  badge                Badge?
+  certificates         Certificate[]
+
+  @@index([congressId, paymentStatus])
+  @@index([congressId, status])
+  @@map("registrations")
+}
+
+model RegistrationOption {
+  id             String  @id @default(uuid()) @db.Uuid
+  registrationId String  @map("registration_id") @db.Uuid
+  ticketOptionId String  @map("ticket_option_id") @db.Uuid
+  price          Decimal @db.Decimal(12, 2)
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  ticketOption TicketOption @relation(fields: [ticketOptionId], references: [id])
+
+  @@unique([registrationId, ticketOptionId])
+  @@map("registration_options")
+}
+
+model Payment {
+  id                String              @id @default(uuid()) @db.Uuid
+  registrationId    String              @map("registration_id") @db.Uuid
+  method            PaymentMethod
+  status            PaymentRecordStatus @default(pending)
+  amount            Decimal             @db.Decimal(12, 2)
+  currency          Currency
+  provider          String?
+  providerReference String?             @map("provider_reference")
+  providerResponse  Json?               @map("provider_response")
+  validatedById     String?             @map("validated_by_id") @db.Uuid
+  validatedAt       DateTime?           @map("validated_at")
+  internalComment   String?             @map("internal_comment") @db.Text
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+
+  registration         Registration           @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  validatedBy          User?                  @relation("PaymentValidatedBy", fields: [validatedById], references: [id], onDelete: SetNull)
+  proofs               PaymentProof[]
+  paymentStatusHistory PaymentStatusHistory[]
+
+  @@unique([provider, providerReference])
+  @@index([registrationId, status])
+  @@map("payments")
+}
+
+model PaymentProof {
+  id              String      @id @default(uuid()) @db.Uuid
+  paymentId       String      @map("payment_id") @db.Uuid
+  mediaAssetId    String      @map("media_asset_id") @db.Uuid
+  status          ProofStatus @default(pending)
+  reviewedById    String?     @map("reviewed_by_id") @db.Uuid
+  reviewedAt      DateTime?   @map("reviewed_at")
+  rejectionReason String?     @map("rejection_reason") @db.Text
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  payment    Payment    @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id])
+  reviewedBy User?      @relation("PaymentProofReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([paymentId, status])
+  @@map("payment_proofs")
+}
+
+model PaymentStatusHistory {
+  id             String                     @id @default(uuid()) @db.Uuid
+  registrationId String                     @map("registration_id") @db.Uuid
+  fromStatus     RegistrationPaymentStatus? @map("from_status")
+  toStatus       RegistrationPaymentStatus  @map("to_status")
+  triggeredById  String?                    @map("triggered_by_id") @db.Uuid
+  paymentId      String?                    @map("payment_id") @db.Uuid
+  note           String?                    @db.Text
+  createdAt      DateTime                   @default(now()) @map("created_at")
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  triggeredBy  User?        @relation("PaymentStatusTriggeredBy", fields: [triggeredById], references: [id], onDelete: SetNull)
+  payment      Payment?     @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  @@index([registrationId, createdAt])
+  @@map("payment_status_history")
+}
+
+// ---------------------------------------------------------------------------
+// Scientific submissions
+// ---------------------------------------------------------------------------
+
+model SubmissionType {
+  code    String @id
+  labelFr String @map("label_fr")
+  labelEn String @map("label_en")
+
+  scientificSubmissions ScientificSubmission[]
+
+  @@map("submission_types")
+}
+
+model ScientificSubmission {
+  id                      String           @id @default(uuid()) @db.Uuid
+  reference               String           @unique
+  congressId              String           @map("congress_id") @db.Uuid
+  userId                  String           @map("user_id") @db.Uuid
+  submissionTypeCode      String           @map("submission_type_code")
+  themeId                 String           @map("theme_id") @db.Uuid
+  title                   String
+  abstract                Json
+  keywords                String[]
+  grade                   SubmitterGrade
+  residencyYear           Int?             @map("residency_year")
+  supervisorName          String?          @map("supervisor_name")
+  institution             String
+  department              String?
+  city                    String?
+  country                 String?
+  status                  SubmissionStatus @default(draft)
+  ethicsConfirmed         Boolean          @default(false) @map("ethics_confirmed")
+  coiDeclared             Boolean          @default(false) @map("coi_declared")
+  patientConsentConfirmed Boolean?         @map("patient_consent_confirmed")
+  submittedAt             DateTime?        @map("submitted_at")
+  deletedAt               DateTime?        @map("deleted_at")
+  createdAt               DateTime         @default(now()) @map("created_at")
+  updatedAt               DateTime         @updatedAt @map("updated_at")
+
+  congress              Congress                  @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  user                  User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submissionType        SubmissionType            @relation(fields: [submissionTypeCode], references: [code])
+  theme                 Theme                     @relation(fields: [themeId], references: [id])
+  authors               SubmissionAuthor[]
+  files                 SubmissionFile[]
+  statusHistory         SubmissionStatusHistory[]
+  evaluationAssignments EvaluationAssignment[]
+  decision              SubmissionDecision?
+  presentations         Presentation[]
+  certificates          Certificate[]
+
+  @@index([congressId, status])
+  @@map("scientific_submissions")
+}
+
+model SubmissionAuthor {
+  id                 String  @id @default(uuid()) @db.Uuid
+  submissionId       String  @map("submission_id") @db.Uuid
+  fullName           String  @map("full_name")
+  affiliation        String?
+  isPresentingAuthor Boolean @default(false) @map("is_presenting_author")
+  displayOrder       Int     @default(0) @map("display_order")
+
+  submission ScientificSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId, displayOrder])
+  @@map("submission_authors")
+}
+
+model SubmissionFile {
+  id           String             @id @default(uuid()) @db.Uuid
+  submissionId String             @map("submission_id") @db.Uuid
+  mediaAssetId String             @map("media_asset_id") @db.Uuid
+  fileType     SubmissionFileType @map("file_type")
+  createdAt    DateTime           @default(now()) @map("created_at")
+
+  submission ScientificSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset           @relation(fields: [mediaAssetId], references: [id])
+
+  @@map("submission_files")
+}
+
+model SubmissionStatusHistory {
+  id           String            @id @default(uuid()) @db.Uuid
+  submissionId String            @map("submission_id") @db.Uuid
+  fromStatus   SubmissionStatus? @map("from_status")
+  toStatus     SubmissionStatus  @map("to_status")
+  changedById  String?           @map("changed_by_id") @db.Uuid
+  note         String?           @db.Text
+  createdAt    DateTime          @default(now()) @map("created_at")
+
+  submission ScientificSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  changedBy  User?                @relation(fields: [changedById], references: [id], onDelete: SetNull)
+
+  @@index([submissionId, createdAt])
+  @@map("submission_status_history")
+}
+
+model EvaluationAssignment {
+  id           String                     @id @default(uuid()) @db.Uuid
+  submissionId String                     @map("submission_id") @db.Uuid
+  evaluatorId  String                     @map("evaluator_id") @db.Uuid
+  assignedById String                     @map("assigned_by_id") @db.Uuid
+  status       EvaluationAssignmentStatus @default(pending)
+  dueAt        DateTime?                  @map("due_at")
+  createdAt    DateTime                   @default(now()) @map("created_at")
+  updatedAt    DateTime                   @updatedAt @map("updated_at")
+
+  submission ScientificSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  evaluator  User                 @relation("EvaluationAssignmentEvaluator", fields: [evaluatorId], references: [id], onDelete: Cascade)
+  assignedBy User                 @relation("EvaluationAssignmentAssignedBy", fields: [assignedById], references: [id])
+  evaluation Evaluation?
+
+  @@unique([submissionId, evaluatorId])
+  @@index([evaluatorId, status])
+  @@map("evaluation_assignments")
+}
+
+model Evaluation {
+  id           String    @id @default(uuid()) @db.Uuid
+  assignmentId String    @unique @map("assignment_id") @db.Uuid
+  scores       Json
+  totalScore   Decimal   @map("total_score") @db.Decimal(5, 2)
+  adminComment String?   @map("admin_comment") @db.Text
+  submittedAt  DateTime? @map("submitted_at")
+  editable     Boolean   @default(false)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  assignment EvaluationAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@map("evaluations")
+}
+
+model SubmissionDecision {
+  id              String                 @id @default(uuid()) @db.Uuid
+  submissionId    String                 @unique @map("submission_id") @db.Uuid
+  decision        SubmissionDecisionType
+  decidedById     String                 @map("decided_by_id") @db.Uuid
+  decidedAt       DateTime               @map("decided_at")
+  messageToAuthor String?                @map("message_to_author") @db.Text
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+
+  submission ScientificSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  decidedBy  User                 @relation(fields: [decidedById], references: [id])
+
+  @@map("submission_decisions")
+}
+
+// ---------------------------------------------------------------------------
+// Badges & check-in
+// ---------------------------------------------------------------------------
+
+model Badge {
+  id              String           @id @default(uuid()) @db.Uuid
+  registrationId  String           @unique @map("registration_id") @db.Uuid
+  qrToken         String           @unique @map("qr_token")
+  categoryLabel   String           @map("category_label")
+  colorCode       String           @map("color_code")
+  printStatus     BadgePrintStatus @default(not_printed) @map("print_status")
+  printedAt       DateTime?        @map("printed_at")
+  reprintCount    Int              @default(0) @map("reprint_count")
+  generatedFileId String?          @map("generated_file_id") @db.Uuid
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  registration  Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  generatedFile MediaAsset?  @relation("BadgeGeneratedFile", fields: [generatedFileId], references: [id], onDelete: SetNull)
+  checkIns      CheckIn[]
+
+  @@map("badges")
+}
+
+model CheckIn {
+  id           String              @id @default(uuid()) @db.Uuid
+  badgeId      String              @map("badge_id") @db.Uuid
+  scannedById  String              @map("scanned_by_id") @db.Uuid
+  sessionId    String?             @map("session_id") @db.Uuid
+  accessStatus CheckInAccessStatus @map("access_status")
+  scanNumber   Int                 @map("scan_number")
+  notes        String?             @db.Text
+  scannedAt    DateTime            @default(now()) @map("scanned_at")
+
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  scannedBy User     @relation("CheckInScannedBy", fields: [scannedById], references: [id])
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  @@index([badgeId, scannedAt])
+  @@map("check_ins")
+}
+
+// ---------------------------------------------------------------------------
+// Certificates
+// ---------------------------------------------------------------------------
+
+model CertificateTemplate {
+  id                String          @id @default(uuid()) @db.Uuid
+  congressId        String          @map("congress_id") @db.Uuid
+  certificateType   CertificateType @map("certificate_type")
+  backgroundMediaId String?         @map("background_media_id") @db.Uuid
+  signatureMediaId  String?         @map("signature_media_id") @db.Uuid
+  stampMediaId      String?         @map("stamp_media_id") @db.Uuid
+  fieldsConfig      Json            @default("{}") @map("fields_config")
+  active            Boolean         @default(true)
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  congress        Congress    @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  backgroundMedia MediaAsset? @relation("CertificateTemplateBackground", fields: [backgroundMediaId], references: [id], onDelete: SetNull)
+  signatureMedia  MediaAsset? @relation("CertificateTemplateSignature", fields: [signatureMediaId], references: [id], onDelete: SetNull)
+  stampMedia      MediaAsset? @relation("CertificateTemplateStamp", fields: [stampMediaId], references: [id], onDelete: SetNull)
+
+  @@unique([congressId, certificateType])
+  @@map("certificate_templates")
+}
+
+model Certificate {
+  id               String            @id @default(uuid()) @db.Uuid
+  congressId       String            @map("congress_id") @db.Uuid
+  recipientUserId  String            @map("recipient_user_id") @db.Uuid
+  registrationId   String?           @map("registration_id") @db.Uuid
+  submissionId     String?           @map("submission_id") @db.Uuid
+  sessionId        String?           @map("session_id") @db.Uuid
+  certificateType  CertificateType   @map("certificate_type")
+  status           CertificateStatus @default(draft)
+  authorizedById   String?           @map("authorized_by_id") @db.Uuid
+  generatedFileId  String?           @map("generated_file_id") @db.Uuid
+  verificationCode String            @unique @map("verification_code")
+  metadata         Json              @default("{}")
+  authorizedAt     DateTime?         @map("authorized_at")
+  generatedAt      DateTime?         @map("generated_at")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+
+  congress      Congress              @relation(fields: [congressId], references: [id], onDelete: Cascade)
+  recipientUser User                  @relation("CertificateRecipient", fields: [recipientUserId], references: [id], onDelete: Cascade)
+  registration  Registration?         @relation(fields: [registrationId], references: [id], onDelete: SetNull)
+  submission    ScientificSubmission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  session       Session?              @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  authorizedBy  User?                 @relation("CertificateAuthorizedBy", fields: [authorizedById], references: [id], onDelete: SetNull)
+  generatedFile MediaAsset?           @relation("CertificateGeneratedFile", fields: [generatedFileId], references: [id], onDelete: SetNull)
+
+  @@index([recipientUserId])
+  @@index([congressId, certificateType])
+  @@map("certificates")
+}
+
+// ---------------------------------------------------------------------------
+// Email
+// ---------------------------------------------------------------------------
+
+model EmailTemplate {
+  id         String            @id @default(uuid()) @db.Uuid
+  congressId String            @map("congress_id") @db.Uuid
+  code       EmailTemplateCode
+  subjectFr  String            @map("subject_fr")
+  subjectEn  String            @map("subject_en")
+  bodyFr     String            @map("body_fr") @db.Text
+  bodyEn     String            @map("body_en") @db.Text
+  variables  String[]
+  createdAt  DateTime          @default(now()) @map("created_at")
+  updatedAt  DateTime          @updatedAt @map("updated_at")
+
+  congress Congress @relation(fields: [congressId], references: [id], onDelete: Cascade)
+
+  @@unique([congressId, code])
+  @@map("email_templates")
 }
