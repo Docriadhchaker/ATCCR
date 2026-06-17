@@ -46,7 +46,7 @@
     },
     "moduleDescriptions": {
       "congressOverview": "Paramètres généraux et informations du congrès.",
-      "registrations": "Gestion des inscriptions des participants.",
+      "registrations": "Configuration des catégories de billets, tarifs et options d'inscription.",
       "payments": "Suivi des paiements et des preuves.",
       "submissions": "Dépôt et évaluation des travaux scientifiques.",
       "program": "Sessions, intervenants et planning.",
@@ -200,6 +200,85 @@
       "tagline": "Plateforme de gestion du congrès médical scientifique ATCCR — environnement de démonstration.",
       "adminLogin": "Espace administrateur",
       "copyright": "© ATCCR — Données de démonstration fictives."
+    }
+  },
+  "TicketSettings": {
+    "pageTitle": "Paramètres des billets",
+    "pageDescription": "Gérez les types de billets, les tarifs et les options d'inscription du congrès de démonstration. La liste des inscriptions participants n'est pas encore disponible.",
+    "backToDashboard": "Retour au tableau de bord",
+    "participantListComingSoon": "Cette page configure uniquement les catégories de billets et les tarifs. La liste des inscriptions participants et le parcours public seront activés dans une phase ultérieure.",
+    "ticketTypes": "Types de billets",
+    "ticketTypesDescription": "Aperçu des catégories de billets configurées pour le congrès.",
+    "ticketTypesEmpty": "Aucun type de billet pour le moment. Créez-en un ci-dessous pour configurer les tarifs.",
+    "registrationOptions": "Options d'inscription",
+    "optionsEmpty": "Aucune option d'inscription pour ce type de billet.",
+    "createTicketType": "Créer un type de billet",
+    "createTicketTypeDescription": "Ajoutez une catégorie de billet avec tarification et règles d'éligibilité.",
+    "editTicketType": "Modifier : {name}",
+    "editTicketTypeDescription": "Mettez à jour les tarifs, l'éligibilité et la disponibilité de ce type de billet.",
+    "createOption": "Ajouter l'option",
+    "addOption": "Ajouter une option d'inscription",
+    "save": "Enregistrer",
+    "saveSuccess": "Modifications enregistrées avec succès.",
+    "includedBadge": "Inclus",
+    "priceSuffix": "tarif",
+    "notSet": "—",
+    "noDeleteNote": "La suppression n'est pas disponible dans cette phase. Désactivez un type de billet si vous devez le masquer.",
+    "table": {
+      "name": "Nom",
+      "price": "Tarif",
+      "earlyBird": "Early bird",
+      "quota": "Capacité",
+      "options": "Options",
+      "status": "Statut"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "currency": {
+      "TND": "TND — Dinar tunisien",
+      "EUR": "EUR — Euro"
+    },
+    "fields": {
+      "nameFr": "Nom (français)",
+      "nameEn": "Nom (anglais)",
+      "descriptionFr": "Description (français)",
+      "descriptionEn": "Description (anglais)",
+      "eligibleCategories": "Catégories de participants éligibles",
+      "eligibleCategoriesHint": "Sélectionnez au moins une catégorie pouvant acheter ce billet.",
+      "currency": "Devise",
+      "price": "Tarif standard",
+      "earlyBirdPrice": "Tarif early bird",
+      "earlyBirdDeadline": "Date limite early bird",
+      "onSitePrice": "Tarif sur place",
+      "quota": "Capacité (quota)",
+      "active": "Type de billet actif",
+      "optionNameFr": "Nom de l'option (français)",
+      "optionNameEn": "Nom de l'option (anglais)",
+      "optionPrice": "Prix de l'option",
+      "included": "Inclus dans le tarif de base"
+    },
+    "participantCategory": {
+      "specialist": "Spécialiste",
+      "resident": "Résident",
+      "student": "Étudiant",
+      "paramedical": "Paramédical",
+      "guest": "Invité",
+      "speaker": "Intervenant",
+      "scientific_committee": "Comité scientifique",
+      "sponsor": "Sponsor",
+      "press": "Presse",
+      "staff": "Staff"
+    },
+    "errors": {
+      "required": "Ce champ est obligatoire.",
+      "invalidPrice": "Saisissez un tarif valide (0 ou plus).",
+      "eligibleCategoriesRequired": "Sélectionnez au moins une catégorie de participant éligible.",
+      "validation": "Veuillez corriger les champs signalés.",
+      "forbidden": "Vous n'avez pas l'autorisation de gérer les paramètres des billets.",
+      "notFound": "Congrès ou type de billet introuvable.",
+      "generic": "Une erreur est survenue. Veuillez réessayer."
     }
   }
 }

@@ -30,7 +30,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { key: "dashboard", icon: LayoutDashboard, segment: null, comingSoon: false },
   { key: "congressOverview", icon: CalendarDays, segment: "congress", comingSoon: false },
-  { key: "registrations", icon: Users, segment: "registrations", comingSoon: true },
+  { key: "registrations", icon: Users, segment: "registrations", comingSoon: false },
   { key: "payments", icon: CreditCard, segment: "payments", comingSoon: true },
   { key: "submissions", icon: FileText, segment: "submissions", comingSoon: true },
   { key: "program", icon: CalendarClock, segment: "program", comingSoon: true },

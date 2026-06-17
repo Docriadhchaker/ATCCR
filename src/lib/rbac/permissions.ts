@@ -47,6 +47,8 @@ export type PermissionCode = (typeof PERMISSION_CODES)[number];
 export const ACTIVE_PHASE0_PERMISSIONS: readonly PermissionCode[] = [
   "congress.settings.manage",
   "congress.settings.read",
+  "registrations.list",
+  "registrations.manage",
   "users.roles.manage",
   "audit.read",
 ] as const;
@@ -59,6 +61,8 @@ const ROLE_PERMISSIONS: Partial<Record<RoleCode, readonly PermissionCode[]>> = {
   congress_admin: [
     "congress.settings.manage",
     "congress.settings.read",
+    "registrations.list",
+    "registrations.manage",
   ],
 };
 

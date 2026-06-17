@@ -281,6 +281,21 @@
 
 ---
 
+## DEC-018 — Paramètres billets admin sans inscription publique ni paiement (Phase 0 D5)
+
+**Date** : 2026-06-17
+**Statut** : accepté
+
+**Contexte** : Phase 0 Step D5 requiert une page admin pour configurer types de billets et options d'inscription à partir du schéma existant, sans démarrer l'inscription participant, les paiements ni la liste des inscriptions.
+
+**Décision** : Implémenter `/[locale]/admin/registrations` pour gérer `TicketType` et `TicketOption` du congrès seed `atccr-demo-2026`. RBAC via `registrations.list` (lecture) et `registrations.manage` (écriture) pour `super_admin` et `congress_admin`. Désactivation via champ `active` sur `TicketType` ; pas de suppression exposée (options sans champ statut). Aucune migration schéma ; pas de modification Auth.js.
+
+**Alternatives écartées** : Liste inscriptions participants ; formulaire public ; flux paiement ; nouveaux champs BDD.
+
+**Conséquences** : Fondation tarification admin prête. Design system page override persisté sous `design-system/atccr-platform/pages/ticket-settings.md`.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -302,3 +317,4 @@
 | DEC-015 | Admin shell navy/teal + typographie + i18n boundary | accepté |
 | DEC-016 | Paramètres congrès admin sans migration schéma | accepté |
 | DEC-017 | Landing publique read-only sans workflows publics | accepté |
+| DEC-018 | Paramètres billets admin sans inscription publique ni paiement | accepté |

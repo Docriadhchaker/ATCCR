@@ -46,7 +46,7 @@
     },
     "moduleDescriptions": {
       "congressOverview": "General congress settings and information.",
-      "registrations": "Manage participant registrations.",
+      "registrations": "Configure ticket types, pricing, and registration options.",
       "payments": "Track payments and proofs.",
       "submissions": "Scientific work submission and evaluation.",
       "program": "Sessions, speakers, and scheduling.",
@@ -200,6 +200,85 @@
       "tagline": "ATCCR medical scientific congress management platform — demonstration environment.",
       "adminLogin": "Admin area",
       "copyright": "© ATCCR — Fictional demo data only."
+    }
+  },
+  "TicketSettings": {
+    "pageTitle": "Ticket settings",
+    "pageDescription": "Manage ticket types, pricing, and registration options for the demo congress. Participant registration records are not available yet.",
+    "backToDashboard": "Back to dashboard",
+    "participantListComingSoon": "This page configures ticket categories and pricing only. The participant registration list and public registration flow will be enabled in a later phase.",
+    "ticketTypes": "Ticket types",
+    "ticketTypesDescription": "Overview of configured ticket categories for the congress.",
+    "ticketTypesEmpty": "No ticket types yet. Create one below to configure pricing.",
+    "registrationOptions": "Registration options",
+    "optionsEmpty": "No registration options for this ticket type yet.",
+    "createTicketType": "Create ticket type",
+    "createTicketTypeDescription": "Add a new ticket category with pricing and eligibility rules.",
+    "editTicketType": "Edit: {name}",
+    "editTicketTypeDescription": "Update pricing, eligibility, and availability for this ticket type.",
+    "createOption": "Add option",
+    "addOption": "Add registration option",
+    "save": "Save changes",
+    "saveSuccess": "Changes saved successfully.",
+    "includedBadge": "Included",
+    "priceSuffix": "price",
+    "notSet": "—",
+    "noDeleteNote": "Deletion is not available in this phase. Deactivate a ticket type instead if you need to hide it.",
+    "table": {
+      "name": "Name",
+      "price": "Price",
+      "earlyBird": "Early bird",
+      "quota": "Capacity",
+      "options": "Options",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "currency": {
+      "TND": "TND — Tunisian dinar",
+      "EUR": "EUR — Euro"
+    },
+    "fields": {
+      "nameFr": "Name (French)",
+      "nameEn": "Name (English)",
+      "descriptionFr": "Description (French)",
+      "descriptionEn": "Description (English)",
+      "eligibleCategories": "Eligible participant categories",
+      "eligibleCategoriesHint": "Select at least one category that can purchase this ticket.",
+      "currency": "Currency",
+      "price": "Standard price",
+      "earlyBirdPrice": "Early bird price",
+      "earlyBirdDeadline": "Early bird deadline",
+      "onSitePrice": "On-site price",
+      "quota": "Capacity (quota)",
+      "active": "Active ticket type",
+      "optionNameFr": "Option name (French)",
+      "optionNameEn": "Option name (English)",
+      "optionPrice": "Option price",
+      "included": "Included in base ticket price"
+    },
+    "participantCategory": {
+      "specialist": "Specialist",
+      "resident": "Resident",
+      "student": "Student",
+      "paramedical": "Paramedical",
+      "guest": "Guest",
+      "speaker": "Speaker",
+      "scientific_committee": "Scientific committee",
+      "sponsor": "Sponsor",
+      "press": "Press",
+      "staff": "Staff"
+    },
+    "errors": {
+      "required": "This field is required.",
+      "invalidPrice": "Enter a valid price (0 or greater).",
+      "eligibleCategoriesRequired": "Select at least one eligible participant category.",
+      "validation": "Please fix the highlighted fields.",
+      "forbidden": "You do not have permission to manage ticket settings.",
+      "notFound": "Congress or ticket type not found.",
+      "generic": "Something went wrong. Please try again."
     }
   }
 }
