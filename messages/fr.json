@@ -137,6 +137,7 @@
     },
     "hero": {
       "defaultSubtitle": "Congrès médical scientifique",
+      "register": "S'inscrire",
       "registerComingSoon": "Inscription — bientôt disponible",
       "viewProgram": "Voir le programme"
     },
@@ -189,9 +190,10 @@
     },
     "cta": {
       "title": "Participer au congrès",
-      "description": "Les parcours d'inscription et de soumission scientifique seront activés dans les prochaines phases.",
+      "description": "Inscrivez-vous au congrès ou découvrez les prochains parcours de soumission scientifique.",
+      "register": "S'inscrire maintenant",
       "registrationComingSoon": "Inscription — bientôt disponible",
-      "registrationHint": "La billetterie en ligne et les tarifs seront disponibles prochainement.",
+      "registrationHint": "Complétez le formulaire d'inscription. Les instructions de paiement suivront ultérieurement.",
       "submissionComingSoon": "Soumission scientifique — bientôt disponible",
       "submissionHint": "Le dépôt des travaux scientifiques sera ouvert prochainement.",
       "adminLogin": "Connexion administrateur"
@@ -279,6 +281,58 @@
       "validation": "Veuillez corriger les champs signalés.",
       "forbidden": "Vous n'avez pas l'autorisation de gérer les paramètres des billets.",
       "notFound": "Congrès ou type de billet introuvable.",
+      "generic": "Une erreur est survenue. Veuillez réessayer."
+    }
+  },
+  "PublicRegistration": {
+    "pageTitle": "Inscription au congrès",
+    "pageDescription": "Inscrivez-vous au congrès médical scientifique ATCCR. Ce formulaire collecte uniquement vos informations professionnelles et vos préférences de billet.",
+    "backToLanding": "Retour au site du congrès",
+    "futureStepsNotice": "Le paiement, le bon de commande et le dépôt de documents ne font pas partie de cette étape. Vous recevrez les instructions suivantes après l'envoi du formulaire.",
+    "noTicketTypes": "Les catégories d'inscription ne sont pas encore disponibles. Veuillez réessayer plus tard.",
+    "free": "Gratuit",
+    "totalFree": "Total : inscription gratuite",
+    "totalAmount": "Tarif du billet : {amount}",
+    "submit": "Envoyer l'inscription",
+    "submitting": "Envoi en cours…",
+    "optionsAgencyNote": "Les préférences hébergement et transport sont informatives. L'agence partenaire vous contactera ultérieurement. Aucune réservation ni paiement n'est traité ici.",
+    "sections": {
+      "participant": "Informations du participant",
+      "participantDescription": "Coordonnées professionnelles pour votre inscription au congrès.",
+      "ticket": "Catégorie d'inscription",
+      "ticketDescription": "Sélectionnez votre catégorie d'inscription pour {congress}.",
+      "options": "Préférences hébergement et transport",
+      "optionsDescription": "Préférences optionnelles. L'agence partenaire assurera le suivi."
+    },
+    "fields": {
+      "email": "Adresse e-mail",
+      "fullName": "Nom et prénom",
+      "specialty": "Spécialité",
+      "institution": "Établissement / institution",
+      "phone": "Numéro de téléphone",
+      "ticketCategory": "Catégorie d'inscription",
+      "options": "Options hébergement et transport",
+      "terms": "J'accepte les conditions générales du congrès.",
+      "consent": "Je consens au traitement de mes données aux fins de l'inscription au congrès."
+    },
+    "success": {
+      "title": "Inscription enregistrée",
+      "description": "Votre demande d'inscription a été enregistrée avec succès.",
+      "referenceLabel": "Référence d'inscription",
+      "nextSteps": "Conservez cette référence. Notre équipe vous communiquera les prochaines étapes.",
+      "paymentLater": "Les instructions de paiement et la gestion du bon de commande seront communiquées dans une phase ultérieure.",
+      "proofLater": "En tant qu'interne ou étudiant, un justificatif vous sera demandé ultérieurement."
+    },
+    "errors": {
+      "required": "Ce champ est obligatoire.",
+      "invalidEmail": "Saisissez une adresse e-mail valide.",
+      "termsRequired": "Vous devez accepter les conditions générales.",
+      "consentRequired": "Vous devez consentir au traitement des données.",
+      "validation": "Veuillez corriger les champs signalés.",
+      "duplicate": "Une inscription existe déjà pour cette adresse e-mail (référence : {reference}).",
+      "congressNotFound": "L'inscription au congrès n'est pas disponible.",
+      "ticketTypeInvalid": "La catégorie d'inscription sélectionnée est invalide.",
+      "optionsInvalid": "Une ou plusieurs options sélectionnées sont invalides.",
       "generic": "Une erreur est survenue. Veuillez réessayer."
     }
   }

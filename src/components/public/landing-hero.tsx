@@ -8,6 +8,7 @@ type Props = {
   dateRange: string;
   location: string;
   registerLabel: string;
+  registerHref: string;
   programLabel: string;
   programHref: string;
 };
@@ -19,6 +20,7 @@ export function LandingHero({
   dateRange,
   location,
   registerLabel,
+  registerHref,
   programLabel,
   programHref,
 }: Props) {
@@ -58,12 +60,12 @@ export function LandingHero({
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <span
-            aria-disabled="true"
-            className="inline-flex cursor-not-allowed items-center justify-center rounded-lg bg-secondary/60 px-5 py-3 text-sm font-semibold text-secondary-foreground opacity-80"
+          <Link
+            href={registerHref}
+            className="inline-flex cursor-pointer items-center justify-center rounded-lg bg-secondary px-5 py-3 text-sm font-semibold text-secondary-foreground outline-none transition-colors duration-200 hover:bg-secondary/90 focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
           >
             {registerLabel}
-          </span>
+          </Link>
           <Link
             href={programHref}
             className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-primary-foreground/30 bg-transparent px-5 py-3 text-sm font-semibold text-primary-foreground outline-none transition-colors duration-200 hover:bg-primary-foreground/10 focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary"

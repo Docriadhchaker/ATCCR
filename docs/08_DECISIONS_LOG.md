@@ -311,6 +311,21 @@
 
 ---
 
+## DEC-020 — Inscription publique sans session Auth.js ni mot de passe (Phase 0 D6)
+
+**Date** : 2026-06-17
+**Statut** : accepté
+
+**Contexte** : D6.0 a conclu qu'un parcours d'inscription publique minimal est possible sans migration schéma. `Registration.userId` est obligatoire ; le formulaire Google ATCCR doit être couvert sans paiement, upload ni bon de commande.
+
+**Décision** : Implémenter `/[locale]/register` et `/[locale]/register/success` avec server action transactionnelle créant `User` (`passwordHash` null), `UserProfile`, `UserRole` (`participant`), `Registration`, `RegistrationOption`, et `AuditLog`. Pas de session Auth.js post-inscription. Pas de `Payment` ni `PaymentProof`. Doublon même e-mail + congrès bloqué. Confirmation écran + `ConsoleMailer`. CTA landing vers `/register`. Upload justificatif étudiant, bon de commande et paiement reportés à D6.1/D7.
+
+**Alternatives écartées** : Inscription anonyme sans `User` (impossible sans migration) ; création mot de passe public ; paiement immédiat.
+
+**Conséquences** : Parcours participant initial opérationnel en démo. Paiement et preuves restent des phases distinctes.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -334,3 +349,4 @@
 | DEC-017 | Landing publique read-only sans workflows publics | accepté |
 | DEC-018 | Paramètres billets admin sans inscription publique ni paiement | accepté |
 | DEC-019 | Alignement billets sur le formulaire d'inscription Google | accepté |
+| DEC-020 | Inscription publique sans session Auth.js ni mot de passe | accepté |

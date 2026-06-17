@@ -74,7 +74,8 @@ export default async function PublicLandingPage({ params }: Props) {
           description={heroDescription}
           dateRange={dateRange}
           location={venueLine}
-          registerLabel={t("hero.registerComingSoon")}
+          registerLabel={t("hero.register")}
+          registerHref={`/${locale}/register`}
           programLabel={t("hero.viewProgram")}
           programHref="#program"
         />
@@ -265,7 +266,7 @@ export default async function PublicLandingPage({ params }: Props) {
           locale={locale}
           title={t("cta.title")}
           description={t("cta.description")}
-          registrationLabel={t("cta.registrationComingSoon")}
+          registrationLabel={t("cta.register")}
           registrationHint={t("cta.registrationHint")}
           submissionLabel={t("cta.submissionComingSoon")}
           submissionHint={t("cta.submissionHint")}

@@ -9,8 +9,8 @@
 | Phase | Périmètre | Statut |
 |-------|-----------|--------|
 | D5 / D5.1 | Catégories de billets, tarifs, options hébergement/transport (config admin) | Implémenté |
-| D6 | Formulaire d'inscription publique participant | Futur |
-| D7 | Paiement, justificatifs, bon de commande | Futur |
+| D6 | Formulaire d'inscription publique participant (identité, catégorie, options, consentement) | Implémenté |
+| D6.1 / D7 | Justificatif interne/étudiant, paiement, bon de commande | Futur |
 | Ultérieur | Coordination hébergement/transport avec agence partenaire | Futur |
 
 ---
@@ -54,17 +54,36 @@ C'est l'approche la moins risquée sans modification de schéma. Une consolidati
 
 ---
 
-## D6 — Inscription publique participant (futur)
+## D6 — Inscription publique participant (implémenté)
 
-Champs du formulaire Google à mapper vers le futur module d'inscription :
+Champs du formulaire Google implémentés :
 
-- email
-- nom complet (full name)
-- spécialité (specialty)
-- établissement (institution)
-- téléphone (phone)
-- catégorie de billet (ticket category → `TicketType`)
-- justificatif interne/étudiant (intern/student proof upload)
+| Champ Google | Stockage |
+|--------------|----------|
+| email | `User.email` |
+| nom & prénom | `UserProfile.firstName` + `UserProfile.lastName` (découpage formulaire) |
+| spécialité | `UserProfile.specialty` |
+| établissement | `UserProfile.institution` |
+| téléphone | `UserProfile.phone` |
+| catégorie / tarif | `Registration.ticketTypeId` → `TicketType` ; montants snapshot |
+| options hébergement/transport | `RegistrationOption` → `TicketOption` (multi-sélection) |
+| consentement / CGU | `Registration.consentAt`, `termsAcceptedAt` |
+
+Comportement :
+
+- Création `User` sans mot de passe (`passwordHash` null), sans session Auth.js.
+- Rôle `participant` via `UserRole`.
+- Statut initial `Registration.status = pending`.
+- `paymentStatus = not_paid` (tarif > 0) ou `exempted` (Interne/étudiant 0 TND).
+- Confirmation écran + `ConsoleMailer` (pas d'e-mail réel).
+- Doublon bloqué : même e-mail + même congrès.
+
+### Reporté (D6.1 / D7)
+
+- justificatif interne/étudiant (upload)
+- méthode de paiement
+- justificatif de paiement
+- bon de commande / prise en charge institutionnelle
 
 ---
 

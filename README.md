@@ -159,7 +159,20 @@ options (see `docs/09_REGISTRATION_FORM_MAPPING.md`):
   participants later.
 - Legacy D5 demo artifacts (“Demo specialist ticket”, “Gala dinner”) are removed by the
   idempotent seed.
-- **No public registration, payment, or proof upload** is implemented yet.
+- **No payment or proof upload** yet on the public registration form.
+
+## Public registration (Phase 0 Step D6)
+
+Public participant registration at `/[locale]/register` (confirmation at `/[locale]/register/success`):
+
+- Collects professional identity fields, ticket category, optional accommodation/travel
+  preferences, and consent/terms — aligned with the Google Form reference.
+- Creates `User` (no password), `UserProfile`, `UserRole` (`participant`), `Registration`,
+  and `RegistrationOption` rows in a single transaction.
+- Duplicate registration for the same email and congress is blocked.
+- **No Auth.js session** after submit; **no payment**, **no upload**, **no purchase order**.
+- Mock confirmation via on-screen reference + `ConsoleMailer` log only.
+- Landing page registration CTA links to `/[locale]/register`.
 
 ## Development commands
 

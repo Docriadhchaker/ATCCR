@@ -137,6 +137,7 @@
     },
     "hero": {
       "defaultSubtitle": "Medical scientific congress",
+      "register": "Register",
       "registerComingSoon": "Registration — coming soon",
       "viewProgram": "View program"
     },
@@ -189,9 +190,10 @@
     },
     "cta": {
       "title": "Join the congress",
-      "description": "Registration and scientific submission workflows will be enabled in upcoming phases.",
+      "description": "Register for the congress or explore upcoming scientific submission workflows.",
+      "register": "Register now",
       "registrationComingSoon": "Registration — coming soon",
-      "registrationHint": "Online ticketing and pricing will be available soon.",
+      "registrationHint": "Complete the registration form. Payment instructions will follow in a later step.",
       "submissionComingSoon": "Scientific submission — coming soon",
       "submissionHint": "Abstract submission will open soon.",
       "adminLogin": "Admin sign in"
@@ -279,6 +281,58 @@
       "validation": "Please fix the highlighted fields.",
       "forbidden": "You do not have permission to manage ticket settings.",
       "notFound": "Congress or ticket type not found.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "PublicRegistration": {
+    "pageTitle": "Congress registration",
+    "pageDescription": "Register for the ATCCR medical scientific congress. This form collects your professional details and ticket preferences only.",
+    "backToLanding": "Back to congress website",
+    "futureStepsNotice": "Payment, purchase order, and document upload are not part of this step. You will receive further instructions after submitting this form.",
+    "noTicketTypes": "Registration categories are not available yet. Please check back later.",
+    "free": "Free",
+    "totalFree": "Total: free registration",
+    "totalAmount": "Ticket price: {amount}",
+    "submit": "Submit registration",
+    "submitting": "Submitting…",
+    "optionsAgencyNote": "Accommodation and travel preferences are informational. The partner agency will contact you later. No booking or payment is processed here.",
+    "sections": {
+      "participant": "Participant information",
+      "participantDescription": "Professional contact details for your congress registration.",
+      "ticket": "Registration category",
+      "ticketDescription": "Select your registration category for {congress}.",
+      "options": "Accommodation and travel preferences",
+      "optionsDescription": "Optional preferences. The partner agency will follow up with you."
+    },
+    "fields": {
+      "email": "Email address",
+      "fullName": "Full name",
+      "specialty": "Specialty",
+      "institution": "Institution / hospital",
+      "phone": "Phone number",
+      "ticketCategory": "Registration category",
+      "options": "Accommodation and travel options",
+      "terms": "I accept the congress terms and conditions.",
+      "consent": "I consent to the processing of my data for congress registration purposes."
+    },
+    "success": {
+      "title": "Registration submitted",
+      "description": "Your registration request has been recorded successfully.",
+      "referenceLabel": "Registration reference",
+      "nextSteps": "Please keep this reference for your records. Our team will contact you with next steps.",
+      "paymentLater": "Payment instructions and purchase order handling will be communicated in a later phase.",
+      "proofLater": "As an intern or student, you will be asked to provide supporting proof in a later step."
+    },
+    "errors": {
+      "required": "This field is required.",
+      "invalidEmail": "Enter a valid email address.",
+      "termsRequired": "You must accept the terms and conditions.",
+      "consentRequired": "You must consent to data processing.",
+      "validation": "Please fix the highlighted fields.",
+      "duplicate": "A registration already exists for this email address (reference: {reference}).",
+      "congressNotFound": "Congress registration is not available.",
+      "ticketTypeInvalid": "The selected registration category is invalid.",
+      "optionsInvalid": "One or more selected options are invalid.",
       "generic": "Something went wrong. Please try again."
     }
   }

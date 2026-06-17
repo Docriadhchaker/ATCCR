@@ -45,14 +45,12 @@ export function LandingCta({
               <h3 className="text-base font-semibold text-foreground">{registrationLabel}</h3>
               <p className="text-sm text-muted-foreground">{registrationHint}</p>
             </div>
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              className="mt-auto inline-flex cursor-not-allowed items-center justify-center rounded-lg bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
+            <Link
+              href={`/${locale}/register`}
+              className="mt-auto inline-flex cursor-pointer items-center justify-center rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground outline-none transition-colors duration-200 hover:bg-secondary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {registrationLabel}
-            </button>
+            </Link>
           </article>
 
           <article className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
