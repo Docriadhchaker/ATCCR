@@ -288,6 +288,7 @@
     "pageTitle": "Inscription au congrès",
     "pageDescription": "Inscrivez-vous au congrès médical scientifique ATCCR. Ce formulaire collecte uniquement vos informations professionnelles et vos préférences de billet.",
     "backToLanding": "Retour au site du congrès",
+    "backToRegistration": "Retour à l'inscription",
     "futureStepsNotice": "Le paiement, le bon de commande et le dépôt de documents ne font pas partie de cette étape. Vous recevrez les instructions suivantes après l'envoi du formulaire.",
     "noTicketTypes": "Les catégories d'inscription ne sont pas encore disponibles. Veuillez réessayer plus tard.",
     "free": "Gratuit",
@@ -319,9 +320,16 @@
       "title": "Inscription enregistrée",
       "description": "Votre demande d'inscription a été enregistrée avec succès.",
       "referenceLabel": "Référence d'inscription",
+      "participantLabel": "Participant",
+      "categoryLabel": "Catégorie d'inscription",
+      "totalLabel": "Tarif du billet",
       "nextSteps": "Conservez cette référence. Notre équipe vous communiquera les prochaines étapes.",
       "paymentLater": "Les instructions de paiement et la gestion du bon de commande seront communiquées dans une phase ultérieure.",
       "proofLater": "En tant qu'interne ou étudiant, un justificatif vous sera demandé ultérieurement."
+    },
+    "notFound": {
+      "title": "Inscription introuvable",
+      "description": "Nous n'avons trouvé aucune inscription pour cette référence. Elle est peut-être invalide ou expirée. Vérifiez le lien ou inscrivez-vous à nouveau."
     },
     "errors": {
       "required": "Ce champ est obligatoire.",

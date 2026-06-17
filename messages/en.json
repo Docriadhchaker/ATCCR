@@ -288,6 +288,7 @@
     "pageTitle": "Congress registration",
     "pageDescription": "Register for the ATCCR medical scientific congress. This form collects your professional details and ticket preferences only.",
     "backToLanding": "Back to congress website",
+    "backToRegistration": "Back to registration",
     "futureStepsNotice": "Payment, purchase order, and document upload are not part of this step. You will receive further instructions after submitting this form.",
     "noTicketTypes": "Registration categories are not available yet. Please check back later.",
     "free": "Free",
@@ -319,9 +320,16 @@
       "title": "Registration submitted",
       "description": "Your registration request has been recorded successfully.",
       "referenceLabel": "Registration reference",
+      "participantLabel": "Participant",
+      "categoryLabel": "Registration category",
+      "totalLabel": "Ticket price",
       "nextSteps": "Please keep this reference for your records. Our team will contact you with next steps.",
       "paymentLater": "Payment instructions and purchase order handling will be communicated in a later phase.",
       "proofLater": "As an intern or student, you will be asked to provide supporting proof in a later step."
+    },
+    "notFound": {
+      "title": "Registration not found",
+      "description": "We could not find a registration for this reference. It may be invalid or expired. Please check the link or register again."
     },
     "errors": {
       "required": "This field is required.",

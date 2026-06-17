@@ -50,10 +50,7 @@ export async function submitPublicRegistrationAction(
 
   try {
     const result = await createPublicRegistration(typedLocale, parsed.data);
-    const params = new URLSearchParams({
-      ref: result.reference,
-      proof: result.requiresProofLater ? "1" : "0",
-    });
+    const params = new URLSearchParams({ ref: result.reference });
     redirect(`/${locale}/register/success?${params.toString()}`);
   } catch (error) {
     if (error instanceof DuplicateRegistrationError) {

@@ -326,6 +326,21 @@
 
 ---
 
+## DEC-021 — Page de confirmation adossée à la base, sans confiance au paramètre d'URL (Phase 0 D6.1)
+
+**Date** : 2026-06-18
+**Statut** : accepté
+
+**Contexte** : L'audit D6 a révélé que `/[locale]/register/success?ref=...` renvoyait un état de succès même pour une référence inexistante, car la page se fiait au paramètre `?ref=` sans vérifier la base.
+
+**Décision** : La page de confirmation interroge `Registration.reference` (non supprimée) via `findRegistrationConfirmationByReference`. Si la référence existe, affichage de données publiques sûres uniquement (référence, nom du participant, catégorie, montant total) ; sinon, état i18n « inscription introuvable » sans état de succès ni référence renvoyée. Le paramètre `?proof=` est retiré au profit d'une dérivation depuis la base. La référence est générée avant la transaction et un timeout transactionnel explicite (15 s) durcit la persistance face à la latence de la base distante.
+
+**Alternatives écartées** : Conserver la confiance au paramètre d'URL ; exposer plus de données dans l'URL ; `notFound()` strict sans lien de reprise.
+
+**Conséquences** : Confirmation fiable et non falsifiable par l'URL. Aucune donnée privée, de paiement ou d'ID interne exposée. Préalable propre avant D7.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -350,3 +365,4 @@
 | DEC-018 | Paramètres billets admin sans inscription publique ni paiement | accepté |
 | DEC-019 | Alignement billets sur le formulaire d'inscription Google | accepté |
 | DEC-020 | Inscription publique sans session Auth.js ni mot de passe | accepté |
+| DEC-021 | Page de confirmation adossée à la base, sans confiance au paramètre d'URL | accepté |

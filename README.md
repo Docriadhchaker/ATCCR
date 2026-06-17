@@ -174,6 +174,20 @@ Public participant registration at `/[locale]/register` (confirmation at `/[loca
 - Mock confirmation via on-screen reference + `ConsoleMailer` log only.
 - Landing page registration CTA links to `/[locale]/register`.
 
+### Confirmation hardening (Phase 0 Step D6.1)
+
+The confirmation page is **database-backed** and does not trust the `?ref=` query
+parameter blindly:
+
+- It looks up `Registration.reference` in Prisma and renders the confirmation only
+  when a matching, non-deleted registration exists.
+- Unknown or expired references render a clean i18n "registration not found" state
+  (no success state, no echoed reference).
+- Only public-safe data is shown: reference, participant name, ticket category, and
+  total amount — no internal IDs, payment data, or stack traces.
+- The registration reference is generated before the transaction to keep the
+  persistence transaction short and reliable.
+
 ## Development commands
 
 | Command | Description |

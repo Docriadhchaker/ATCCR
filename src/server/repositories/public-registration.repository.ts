@@ -66,3 +66,58 @@ export async function isRegistrationReferenceTaken(reference: string): Promise<b
   });
   return Boolean(existing);
 }
+
+export type RegistrationConfirmation = {
+  reference: string;
+  participantName: string | null;
+  ticketTypeNameFr: string;
+  ticketTypeNameEn: string;
+  totalAmount: number;
+  currency: string;
+  requiresProofLater: boolean;
+};
+
+export async function findRegistrationConfirmationByReference(
+  reference: string,
+): Promise<RegistrationConfirmation | null> {
+  const normalized = reference.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  const registration = await prisma.registration.findFirst({
+    where: { reference: normalized, deletedAt: null },
+    select: {
+      reference: true,
+      totalAmount: true,
+      participantCategory: true,
+      ticketType: {
+        select: { nameFr: true, nameEn: true, currency: true, price: true },
+      },
+      user: {
+        select: {
+          profile: { select: { firstName: true, lastName: true } },
+        },
+      },
+    },
+  });
+
+  if (!registration) {
+    return null;
+  }
+
+  const profile = registration.user.profile;
+  const participantName = profile
+    ? `${profile.firstName} ${profile.lastName}`.trim()
+    : null;
+
+  return {
+    reference: registration.reference,
+    participantName: participantName || null,
+    ticketTypeNameFr: registration.ticketType.nameFr,
+    ticketTypeNameEn: registration.ticketType.nameEn,
+    totalAmount: Number(registration.totalAmount.toString()),
+    currency: registration.ticketType.currency,
+    requiresProofLater: registration.participantCategory === "student",
+  };
+}

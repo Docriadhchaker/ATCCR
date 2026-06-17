@@ -89,6 +89,7 @@ export async function createPublicRegistration(
   const { firstName, lastName } = splitFullName(input.fullName);
   const normalizedEmail = input.email.trim().toLowerCase();
   const now = new Date();
+  const reference = await generateUniqueReference();
 
   const result = await prisma.$transaction(async (tx) => {
     const existingUser = await tx.user.findUnique({
@@ -174,8 +175,6 @@ export async function createPublicRegistration(
       },
     });
 
-    const reference = await generateUniqueReference();
-
     const registration = await tx.registration.create({
       data: {
         reference,
@@ -220,6 +219,8 @@ export async function createPublicRegistration(
       requiresProofLater: isFree,
       isFreeRegistration: isFree,
     };
+  }, {
+    timeout: 15000,
   });
 
   const mailer = getMailer();
