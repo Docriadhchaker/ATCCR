@@ -157,6 +157,8 @@ export function TicketOptionsPanel({ locale, ticketTypeId, options }: PanelProps
         <h3 className="text-sm font-semibold text-foreground">{t("registrationOptions")}</h3>
       </header>
 
+      <p className="text-xs text-muted-foreground">{t("optionsAgencyNote")}</p>
+
       {options.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t("optionsEmpty")}</p>
       ) : (

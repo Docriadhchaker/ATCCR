@@ -145,6 +145,22 @@ congress (`slug: atccr-demo-2026`).
 
 Requires `registrations.list` to view and `registrations.manage` to save.
 
+### Registration form alignment (Phase 0 Step D5.1)
+
+Ticket settings are aligned with the ATCCR Google Form registration reference. The demo
+seed now provisions the real registration categories, fees, and accommodation/travel
+options (see `docs/09_REGISTRATION_FORM_MAPPING.md`):
+
+- Five ticket categories: Médecin spécialiste (400 TND), Résident (200), Technicien
+  supérieur (100), Biologiste / Doctorant (200), Interne / étudiant (0 — proof required
+  later).
+- Four accommodation/travel options attached to each category (schema limitation:
+  `TicketOption` is per-`TicketType`). Prices are `0`; the partner agency contacts
+  participants later.
+- Legacy D5 demo artifacts (“Demo specialist ticket”, “Gala dinner”) are removed by the
+  idempotent seed.
+- **No public registration, payment, or proof upload** is implemented yet.
+
 ## Development commands
 
 | Command | Description |

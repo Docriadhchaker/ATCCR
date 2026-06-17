@@ -296,6 +296,21 @@
 
 ---
 
+## DEC-019 — Alignement billets sur le formulaire d'inscription Google (Phase 0 D5.1)
+
+**Date** : 2026-06-17
+**Statut** : accepté
+
+**Contexte** : Les artefacts de test D5 (« Demo specialist ticket » à 150 TND, option « Gala dinner ») ne correspondent pas au formulaire Google d'inscription réel de l'ATCCR. Il faut aligner la configuration sur les vraies catégories, tarifs et options hébergement/transport, sans démarrer l'inscription publique, le paiement ni l'upload.
+
+**Décision** : Mettre à jour `prisma/seed.ts` de façon idempotente pour provisionner les 5 catégories `TicketType` du formulaire (Médecin spécialiste 400, Résident 200, Technicien supérieur 100, Biologiste/Doctorant 200, Interne/étudiant 0 TND) et les 4 options hébergement/transport. Supprimer les artefacts de test D5 (aucune inscription n'existe). Le modèle `TicketOption` étant rattaché à un `TicketType` unique (pas de modèle d'option global), les options communes sont dupliquées sur chaque catégorie, à prix `0` (agence partenaire ultérieure). Aucune migration schéma ; pas de modification Auth.js ; pas de paiement/upload. Mapping documenté dans `docs/09_REGISTRATION_FORM_MAPPING.md`.
+
+**Alternatives écartées** : Nouveau modèle d'option global (modification schéma) ; conservation des données de test D5 ; implémentation immédiate des justificatifs/paiements.
+
+**Conséquences** : Configuration billets fidèle au formulaire. Duplication assumée des options (4 × 5 = 20 enregistrements) en attendant une éventuelle consolidation. Justificatif interne/étudiant et méthodes de paiement (chèque, virement, sur place, autre) reportés à D6/D7.
+
+---
+
 ## Index des décisions
 
 | ID | Titre | Statut |
@@ -318,3 +333,4 @@
 | DEC-016 | Paramètres congrès admin sans migration schéma | accepté |
 | DEC-017 | Landing publique read-only sans workflows publics | accepté |
 | DEC-018 | Paramètres billets admin sans inscription publique ni paiement | accepté |
+| DEC-019 | Alignement billets sur le formulaire d'inscription Google | accepté |

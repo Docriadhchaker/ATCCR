@@ -186,6 +186,158 @@ async function seedDemoCongress() {
   return congress;
 }
 
+/**
+ * Ticket categories mirrored from the ATCCR Google Form registration reference (D5.1).
+ * Demo/congress configuration only — not participant data. No payment/upload logic.
+ */
+type ParticipantCategoryCode =
+  | "specialist"
+  | "resident"
+  | "student"
+  | "paramedical";
+
+const GOOGLE_FORM_TICKET_TYPES: Array<{
+  nameFr: string;
+  nameEn: string;
+  price: number;
+  eligibleCategories: ParticipantCategoryCode[];
+  descriptionFr?: string;
+  descriptionEn?: string;
+}> = [
+  {
+    nameFr: "Médecin spécialiste",
+    nameEn: "Specialist physician",
+    price: 400,
+    eligibleCategories: ["specialist"],
+  },
+  {
+    nameFr: "Résident",
+    nameEn: "Resident",
+    price: 200,
+    eligibleCategories: ["resident"],
+  },
+  {
+    nameFr: "Technicien supérieur",
+    nameEn: "Senior technician",
+    price: 100,
+    eligibleCategories: ["paramedical"],
+  },
+  {
+    nameFr: "Biologiste / Doctorant",
+    nameEn: "Biologist / PhD candidate",
+    price: 200,
+    eligibleCategories: ["paramedical", "student"],
+  },
+  {
+    nameFr: "Interne / étudiant",
+    nameEn: "Intern / student",
+    price: 0,
+    eligibleCategories: ["student", "resident"],
+    descriptionFr:
+      "Tarif gratuit. Un justificatif sera demandé ultérieurement lors de l'inscription publique.",
+    descriptionEn:
+      "Free of charge. Supporting proof will be required later during public registration.",
+  },
+];
+
+/**
+ * Accommodation/travel options from the Google Form. The current schema ties
+ * TicketOption to a single TicketType (no global option model), so these shared
+ * options are attached to every ticket category. See docs/09_REGISTRATION_FORM_MAPPING.md
+ * for the documented limitation. Prices are 0 — the partner agency contacts
+ * participants later; no booking/payment logic is implemented here.
+ */
+const GOOGLE_FORM_TICKET_OPTIONS: Array<{ nameFr: string; nameEn: string }> = [
+  { nameFr: "Chambre double (LPD)", nameEn: "Double room (bed & breakfast)" },
+  { nameFr: "Chambre single (LPD)", nameEn: "Single room (bed & breakfast)" },
+  {
+    nameFr: "Déplacement par Bus Depuis Tunis / Sousse / Sfax vers Djerba",
+    nameEn: "Bus transfer from Tunis / Sousse / Sfax to Djerba",
+  },
+  {
+    nameFr: "Déplacement Vol Interne Depuis Tunis Vers Djerba",
+    nameEn: "Domestic flight transfer from Tunis to Djerba",
+  },
+];
+
+/** Legacy D5 demo artifacts to remove (no real data, no registrations exist). */
+const LEGACY_TICKET_TYPE_NAMES_EN = ["Demo specialist ticket"];
+const LEGACY_TICKET_TYPE_NAMES_FR = ["Billet démo spécialiste"];
+const LEGACY_TICKET_OPTION_NAMES_EN = ["Gala dinner"];
+const LEGACY_TICKET_OPTION_NAMES_FR = ["Dîner de gala"];
+
+async function cleanupLegacyD5TestData(congressId: string) {
+  await prisma.ticketOption.deleteMany({
+    where: {
+      ticketType: { congressId },
+      OR: [
+        { nameEn: { in: LEGACY_TICKET_OPTION_NAMES_EN } },
+        { nameFr: { in: LEGACY_TICKET_OPTION_NAMES_FR } },
+      ],
+    },
+  });
+
+  await prisma.ticketType.deleteMany({
+    where: {
+      congressId,
+      registrations: { none: {} },
+      OR: [
+        { nameEn: { in: LEGACY_TICKET_TYPE_NAMES_EN } },
+        { nameFr: { in: LEGACY_TICKET_TYPE_NAMES_FR } },
+      ],
+    },
+  });
+}
+
+async function seedDemoTicketSettings(congressId: string) {
+  await cleanupLegacyD5TestData(congressId);
+
+  for (const ticket of GOOGLE_FORM_TICKET_TYPES) {
+    const data = {
+      nameFr: ticket.nameFr,
+      nameEn: ticket.nameEn,
+      descriptionFr: ticket.descriptionFr ?? null,
+      descriptionEn: ticket.descriptionEn ?? null,
+      eligibleCategories: ticket.eligibleCategories,
+      currency: "TND" as const,
+      price: ticket.price,
+      active: true,
+    };
+
+    const existingType = await prisma.ticketType.findFirst({
+      where: { congressId, nameFr: ticket.nameFr },
+    });
+
+    const ticketType = existingType
+      ? await prisma.ticketType.update({ where: { id: existingType.id }, data })
+      : await prisma.ticketType.create({ data: { congressId, ...data } });
+
+    for (const option of GOOGLE_FORM_TICKET_OPTIONS) {
+      const existingOption = await prisma.ticketOption.findFirst({
+        where: { ticketTypeId: ticketType.id, nameFr: option.nameFr },
+      });
+
+      const optionData = {
+        nameFr: option.nameFr,
+        nameEn: option.nameEn,
+        price: 0,
+        included: false,
+      };
+
+      if (existingOption) {
+        await prisma.ticketOption.update({
+          where: { id: existingOption.id },
+          data: optionData,
+        });
+      } else {
+        await prisma.ticketOption.create({
+          data: { ticketTypeId: ticketType.id, ...optionData },
+        });
+      }
+    }
+  }
+}
+
 async function seedDemoSuperAdmin(congressId: string) {
   const demoEmail = "demo.superadmin@example.com";
   const passwordHash = await bcrypt.hash(requireDemoAdminPassword(), BCRYPT_ROUNDS);
@@ -243,6 +395,7 @@ async function main() {
 
   const congress = await seedDemoCongress();
   await seedDemoSuperAdmin(congress.id);
+  await seedDemoTicketSettings(congress.id);
 
   // TODO (Step B2+): map role permissions, email templates, demo themes
   console.log("Seed completed.");
